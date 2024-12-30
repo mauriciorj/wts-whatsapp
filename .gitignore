@@ -1,0 +1,9 @@
+node_modules
+.next
+/webScrapper/selenium/venv
+/webScrapper/logs
+/webScrapper/selenium/hotmart/affiliate/__pycache__
+/webScrapper/selenium/hotmart/marketplace/__pycache__
+.env
+.env.local
+.vercel
