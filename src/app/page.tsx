@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, ChartPie, Rabbit, Shield } from "lucide-react";
 import Image from "next/image";
-import whatsapp_dark from "@/images/whatsapp_dark.png";
-import whatsapp_light from "@/images/whatsapp_light.png";
+import whatsapp_dark from "@/images/whatsapp_dark.webp";
+import whatsapp_light from "@/images/whatsapp_light.webp";
 import Link from "next/link";
 
 export default function Home() {
@@ -36,20 +36,18 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
-            <div className="relative h-[500px]">
+            <div className="border-0 relative h-[500px]">
               {theme === "dark" ? (
                 <Image
                   src={whatsapp_dark}
                   alt="WhatsApp Interface"
-                  className="object-cover rounded-2xl"
-                  priority
+                  className="border-0"
                 />
               ) : (
                 <Image
                   src={whatsapp_light}
                   alt="WhatsApp Interface"
-                  className="object-cover rounded-2xl"
-                  priority
+                  className="border-0"
                 />
               )}
             </div>

@@ -1,13 +1,13 @@
-"use client";
-
 import Link from "next/link";
+import { createServer } from "@/db/supabase/server";
 import { UserNav } from "./user-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "../ui/button";
-import { Menu } from "lucide-react";
 
-export function Header() {
-  const isLoggedIn = true;
+export async function Header() {
+  const supabase = await createServer();
+  const { data } = await supabase.auth.getUser();
+
   return (
     <header className="fixed top-0 w-full bg-background/80 backdrop-blur-sm border-b z-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -16,7 +16,7 @@ export function Header() {
         </Link>
         <div className="flex items-center gap-4">
           <ThemeToggle />
-          {isLoggedIn ? (
+          {data?.user?.email ? (
             <UserNav />
           ) : (
             <div className="flex items-center gap-2">
