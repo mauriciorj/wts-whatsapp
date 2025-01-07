@@ -20,7 +20,7 @@ export default function LoginPage() {
       email: "",
       password: "",
     },
-    onSubmit: async ({ values }: any) => {
+    onSubmit: async ({ value }: any) => {
       try {
         const response = await LoginUser(
           value as { email: string; password: string }
@@ -32,25 +32,6 @@ export default function LoginPage() {
         setServerError(true);
       }
     },
-    validatorAdapter: {
-      validate: async (values: any) => {
-        try {
-          await loginSchema.parseAsync(values);
-          return { status: "success" };
-        } catch (error) {
-          if (error instanceof z.ZodError) {
-            return {
-              status: "error",
-              errors: error.errors.map((e) => ({
-                path: e.path,
-                message: e.message,
-              })),
-            };
-          }
-          return { status: "error", errors: [] };
-        }
-      },
-    },
   });
 
   return (
@@ -58,7 +39,7 @@ export default function LoginPage() {
       <AuthCard>
         <div className="space-y-6">
           {serverError && (
-            <AlertBanner type="error" message={formState.error} />
+            <AlertBanner type="error" message="Usuário e/ou senha inválidos." />
           )}
           <div className="space-y-2 text-center">
             <h1 className="text-2xl font-bold">Seja Bem Vindo</h1>

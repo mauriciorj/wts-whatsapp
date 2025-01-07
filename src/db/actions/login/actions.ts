@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { createServer } from '@/db/supabase/server';
 
 const LoginUser = async (formData: { email: string; password: string }) => {
-  const supabase = createServer();
+  const supabase = await createServer();
 
   const { email, password } = formData;
   const data = {
@@ -14,6 +14,11 @@ const LoginUser = async (formData: { email: string; password: string }) => {
   };
 
   const { error } = await supabase.auth.signInWithPassword(data);
+
+  console.log('')
+  console.log('')
+  console.log('')
+  console.log('error',error)
 
   if (error) {
     return false;

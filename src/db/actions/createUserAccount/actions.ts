@@ -4,8 +4,8 @@ import { createServer } from "@/db/supabase/server";
 import generateRandomCode from "@/lib/generateCode";
 
 const checkIfCodeExists = async (randomCodeToLink: string) => {
-  const supabase = createServer();
-  const { data }: any = await supabase
+  const supabase = await createServer();
+  const { data } = await supabase
     .from("whatsapp")
     .select()
     .eq("link", randomCodeToLink);
@@ -16,15 +16,10 @@ const getUniqueCode = async () => {
   // let code;
   // do {
   //   code = await generateRandomCode();
-  // } while (checkCode(code));
+  // } while (checkIfCodeExists(code));
   // return code;
   const code = await generateRandomCode();
   const check = await checkIfCodeExists(code);
-  console.log("");
-  console.log("");
-  console.log("=== getUniqueCode ===");
-  console.log("code => ", code);
-  console.log("check => ", check);
   return code;
 };
 
@@ -35,28 +30,28 @@ const whatsAppInsert = async ({
   user_id: string;
   link: string;
 }) => {
-  const supabase = createServer();
-  const { data }: any = await supabase
-    .from("whatsapp")
-    .insert({ user_id, link });
-
-  return data;
+  const supabase = await createServer();
+  const { error } = await supabase.from("whatsapp").insert({ user_id, link });
+  return error;
 };
 
 const userProfileUpdate = async ({
   first_name,
   last_name,
   plan,
+  user_id,
 }: {
   first_name: string;
   last_name: string;
   plan: string;
+  user_id: string;
 }) => {
-  const supabase = createServer();
-  const { data }: any = await supabase
+  const supabase = await createServer();
+  const { error } = await supabase
     .from("user_profile")
-    .update({ first_name, last_name, plan });
-  return data;
+    .update({ first_name, last_name, plan })
+    .eq("user_id", user_id);
+  return error;
 };
 
 const CreateUserAccount = async (formData: {
@@ -66,7 +61,7 @@ const CreateUserAccount = async (formData: {
   password: string;
   plan: string;
 }) => {
-  const supabase = createServer();
+  const supabase = await createServer();
 
   const { email, firstName, lastName, password, plan } = formData;
 
@@ -75,45 +70,58 @@ const CreateUserAccount = async (formData: {
     password,
   };
 
+  const { data: hasUser } = await supabase
+    .from("user_profile")
+    .select("email")
+    .eq("email", email);
+
+  if (hasUser && hasUser[0]?.email) {
+    return { status: 400 };
+  }
+
   // Step 1 - Create account
   // *Supabase will add the id and email to user_profile table
   const { data: signUpData, error } = await supabase.auth.signUp(data);
+
+  if (error) {
+    return { status: 500 };
+  }
 
   // Step 2 - If user was created correctly then generate the link, update user_profile and whatsapp tables
   if (signUpData?.user?.id) {
     // Step 2.1 - Generate an unique random link
     const randomUniqueCode = await getUniqueCode();
-    console.log("");
-    console.log("");
-    console.log("randomUniqueCode => ", randomUniqueCode);
 
-    // Step 2.2 - Update the user_profile table with:
-    // First Name, Last Name and Plan
-    const profileUpdated = await userProfileUpdate({
-      first_name: firstName,
-      last_name: lastName,
-      plan: plan,
-    });
-    console.log("");
-    console.log("001 profileUpdated ", profileUpdated);
-
-    // Step 2.3 - Insert in the whatsapp table:
-    // user_id and link (random code)
     if (randomUniqueCode) {
+      // Step 2.2 - Update the user_profile table with:
+      // First Name, Last Name and Plan
+      const profileUpdated = await userProfileUpdate({
+        first_name: firstName,
+        last_name: lastName,
+        plan: plan,
+        user_id: signUpData?.user?.id,
+      });
+
+      if (profileUpdated) {
+        return { status: 500 };
+      }
+
+      // Step 2.3 - Insert in the whatsapp table:
+      // user_id and link (random code)
       const whatsAppUpdated = await whatsAppInsert({
         user_id: signUpData?.user?.id,
         link: randomUniqueCode,
       });
-      console.log("");
-      console.log("002 insert whatsAppData ", whatsAppUpdated);
+
+      if (whatsAppUpdated) {
+        return { status: 500 };
+      }
+    } else {
+      return { status: 500 };
     }
   }
 
-  if (error) {
-    return false;
-  }
-
-  return true;
+  return { status: 200 };
 };
 
 export default CreateUserAccount;

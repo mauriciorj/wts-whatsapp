@@ -5,16 +5,18 @@ import { cn } from "@/lib/utils";
 
 interface AlertBannerProps {
   type: "success" | "error";
-  message: string;
+  message?: string | null;
   className?: string;
 }
 
 export function AlertBanner({ type, message, className }: AlertBannerProps) {
+  if (!message) return null;
   return (
     <div
       className={cn(
         "flex items-center gap-2 p-4 rounded-lg text-sm",
-        type === "success" && "bg-green-50 text-green-700 border border-green-200",
+        type === "success" &&
+          "bg-green-50 text-green-700 border border-green-200",
         type === "error" && "bg-red-50 text-red-700 border border-red-200",
         className
       )}

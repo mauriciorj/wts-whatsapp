@@ -1,10 +1,8 @@
 "use client";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
+import { useRouter } from "next/navigation";
+import { createClient } from '@/db/supabase/client';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,8 +14,18 @@ import { User, LogOut } from "lucide-react";
 import Link from "next/link";
 
 export function UserNav() {
+  const router = useRouter();
   const initials = "JD"; // Get from user data
-  
+
+  const handleSignOut = async () => {
+    const supabase = createClient();
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
+      router.refresh();
+      router.push("/");
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -27,14 +35,21 @@ export function UserNav() {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard/perfil" className="w-full flex items-center">
+        <DropdownMenuItem
+          asChild
+          onClick={() => router.push("/dashboard/perfil")}
+          className="cursor-pointer"
+        >
+          <div className="w-full flex items-center">
             <User className="mr-2 h-4 w-4" />
             Perfil
-          </Link>
+          </div>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-destructive">
+        <DropdownMenuItem
+          className="text-rose-600 cursor-pointer"
+          onClick={() => handleSignOut()}
+        >
           <LogOut className="mr-2 h-4 w-4" />
           Log out
         </DropdownMenuItem>
