@@ -11,7 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User, LogOut } from "lucide-react";
-import Link from "next/link";
 
 export function UserNav() {
   const router = useRouter();
@@ -22,7 +21,6 @@ export function UserNav() {
     const { error } = await supabase.auth.signOut();
     if (!error) {
       router.refresh();
-      router.push("/");
     }
   };
 

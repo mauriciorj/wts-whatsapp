@@ -7,6 +7,7 @@ import { Button } from "../ui/button";
 export async function Header() {
   const supabase = await createServer();
   const { data } = await supabase.auth.getUser();
+  console.log('data => ', data)
 
   return (
     <header className="fixed top-0 w-full bg-background/80 backdrop-blur-sm border-b z-50">

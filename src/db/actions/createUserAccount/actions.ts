@@ -13,13 +13,12 @@ const checkIfCodeExists = async (randomCodeToLink: string) => {
 };
 
 const getUniqueCode = async () => {
-  // let code;
-  // do {
-  //   code = await generateRandomCode();
-  // } while (checkIfCodeExists(code));
-  // return code;
-  const code = await generateRandomCode();
-  const check = await checkIfCodeExists(code);
+  let code: boolean | string = false;
+  while (code === false) {
+    const getCode = await generateRandomCode();
+    const check = await checkIfCodeExists(getCode);
+    if (!check?.length) code = getCode;
+  }
   return code;
 };
 
@@ -70,6 +69,7 @@ const CreateUserAccount = async (formData: {
     password,
   };
 
+  // Step 1 - Check if account doesn't exist
   const { data: hasUser } = await supabase
     .from("user_profile")
     .select("email")
@@ -79,7 +79,7 @@ const CreateUserAccount = async (formData: {
     return { status: 400 };
   }
 
-  // Step 1 - Create account
+  // Step 2 - Create account
   // *Supabase will add the id and email to user_profile table
   const { data: signUpData, error } = await supabase.auth.signUp(data);
 
@@ -87,13 +87,13 @@ const CreateUserAccount = async (formData: {
     return { status: 500 };
   }
 
-  // Step 2 - If user was created correctly then generate the link, update user_profile and whatsapp tables
+  // Step 3 - If user was created correctly then generate the link, update user_profile and whatsapp tables
   if (signUpData?.user?.id) {
-    // Step 2.1 - Generate an unique random link
+    // Step 3.1 - Generate an unique random link
     const randomUniqueCode = await getUniqueCode();
 
     if (randomUniqueCode) {
-      // Step 2.2 - Update the user_profile table with:
+      // Step 3.2 - Update the user_profile table with:
       // First Name, Last Name and Plan
       const profileUpdated = await userProfileUpdate({
         first_name: firstName,
@@ -106,7 +106,7 @@ const CreateUserAccount = async (formData: {
         return { status: 500 };
       }
 
-      // Step 2.3 - Insert in the whatsapp table:
+      // Step 3.3 - Insert in the whatsapp table:
       // user_id and link (random code)
       const whatsAppUpdated = await whatsAppInsert({
         user_id: signUpData?.user?.id,

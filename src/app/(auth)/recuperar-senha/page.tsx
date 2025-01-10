@@ -37,25 +37,6 @@ export default function ForgotPasswordPage() {
         setServerError(true);
       }
     },
-    validatorAdapter: {
-      validate: async (values) => {
-        try {
-          await forgotPasswordSchema.parseAsync(values);
-          return { status: "success" };
-        } catch (error) {
-          if (error instanceof z.ZodError) {
-            return {
-              status: "error",
-              errors: error.errors.map((e) => ({
-                path: e.path,
-                message: e.message,
-              })),
-            };
-          }
-          return { status: "error", errors: [] };
-        }
-      },
-    },
   });
 
   return (

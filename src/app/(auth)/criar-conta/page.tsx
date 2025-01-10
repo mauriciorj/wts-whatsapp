@@ -9,17 +9,27 @@ import { AlertBanner } from "@/components/ui/alert-banner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import PasswordRules from "@/components/auth/passwordRules";
 import CreateUserAccount from "@/db/actions/createUserAccount/actions";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import PasswordRulesValidation from "@/lib/passwordRulesValidation";
 
 export default function CriarConta() {
   const [serverError, setServerError] = useState<boolean | null>(null);
   const [serverErrorMessage, setServerErrorMessage] = useState<string | null>(
     null
   );
+
   const [successMessage, setSuccessMessage] = useState<boolean | null>(null);
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
+  const [passwordValidation, setPasswordValidation] = useState<any>({
+    rule1: false,
+    rule2: false,
+    rule3: false,
+    rule4: false,
+    rule5: false,
+  });
 
   const form = useForm({
     defaultValues: {
@@ -169,7 +179,16 @@ export default function CriarConta() {
                       type={isShowPassword ? "text" : "password"}
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
+                      onChange={(e) => {
+                        field.handleChange(e.target.value);
+                        const checkRules = PasswordRulesValidation(
+                          e.target.value
+                        );
+                        setPasswordValidation((prevState: any) => ({
+                          ...prevState,
+                          ...checkRules,
+                        }));
+                      }}
                       required
                     />
                     {isShowPassword ? (
@@ -178,7 +197,7 @@ export default function CriarConta() {
                         data-testid="showpassword"
                         className="flex w-[25px] absolute right-2 top-8 cursor-pointer text-center justify-center"
                       >
-                        <EyeOff className="h-6 w-6 text-primary"/>
+                        <EyeOff className="h-6 w-6 text-primary" />
                       </div>
                     ) : (
                       <div
@@ -186,7 +205,7 @@ export default function CriarConta() {
                         data-testid="showpassword"
                         className="flex w-[25px] absolute right-2 top-8 cursor-pointer text-center justify-center"
                       >
-                        <Eye className="h-6 w-6 text-primary"/>
+                        <Eye className="h-6 w-6 text-primary" />
                       </div>
                     )}
                     {field.state.meta.errors && (
@@ -197,6 +216,7 @@ export default function CriarConta() {
                   </div>
                 )}
               </form.Field>
+              <PasswordRules passwordValidation={passwordValidation} />
 
               <form.Field name="plan">
                 {(field) => (

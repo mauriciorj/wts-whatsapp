@@ -10,10 +10,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import LoginUser from "@/db/actions/login/actions";
 import { loginSchema } from "@/lib/validations/auth";
+import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "@tanstack/react-form";
 
 export default function LoginPage() {
-  const [serverError, setServerError] = useState<boolean | null>(null);
+  const [serverError, setServerError] = useState<boolean>(false);
+  const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
 
   const form = useForm({
     defaultValues: {
@@ -21,14 +23,10 @@ export default function LoginPage() {
       password: "",
     },
     onSubmit: async ({ value }: any) => {
-      try {
-        const response = await LoginUser(
-          value as { email: string; password: string }
-        );
-        if (response === false) {
-          setServerError(true);
-        }
-      } catch (e) {
+      const response = await LoginUser(
+        value as { email: string; password: string }
+      );
+      if (response === false) {
         setServerError(true);
       }
     },
@@ -52,6 +50,7 @@ export default function LoginPage() {
             onSubmit={(e) => {
               e.preventDefault();
               form.handleSubmit();
+              setServerError(false);
             }}
             className="space-y-4"
           >
@@ -77,18 +76,35 @@ export default function LoginPage() {
                 )}
               </form.Field>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 relative">
               <Label htmlFor="password">Senha</Label>
               <form.Field name="password">
                 {(field) => (
                   <>
                     <Input
                       id="password"
-                      type="password"
+                      type={isShowPassword ? "text" : "password"}
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                     />
+                    {isShowPassword ? (
+                      <div
+                        onClick={() => setIsShowPassword(!isShowPassword)}
+                        data-testid="showpassword"
+                        className="flex w-[25px] absolute right-2 top-8 cursor-pointer text-center justify-center"
+                      >
+                        <EyeOff className="h-6 w-6 text-primary" />
+                      </div>
+                    ) : (
+                      <div
+                        onClick={() => setIsShowPassword(!isShowPassword)}
+                        data-testid="showpassword"
+                        className="flex w-[25px] absolute right-2 top-8 cursor-pointer text-center justify-center"
+                      >
+                        <Eye className="h-6 w-6 text-primary" />
+                      </div>
+                    )}
                     {field.state.meta.errors && (
                       <p className="text-sm text-destructive">
                         {field.state.meta.errors[0]}
