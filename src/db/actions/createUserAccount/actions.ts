@@ -39,16 +39,18 @@ const userProfileUpdate = async ({
   last_name,
   plan,
   user_id,
+  is_subscription_active,
 }: {
   first_name: string;
   last_name: string;
   plan: string;
   user_id: string;
+  is_subscription_active: boolean;
 }) => {
   const supabase = await createServer();
   const { error } = await supabase
     .from("user_profile")
-    .update({ first_name, last_name, plan })
+    .update({ first_name, last_name, plan, is_subscription_active })
     .eq("user_id", user_id);
   return error;
 };
@@ -100,6 +102,7 @@ const CreateUserAccount = async (formData: {
         last_name: lastName,
         plan: plan,
         user_id: signUpData?.user?.id,
+        is_subscription_active: true,
       });
 
       if (profileUpdated) {

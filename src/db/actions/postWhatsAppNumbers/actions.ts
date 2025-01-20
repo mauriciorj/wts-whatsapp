@@ -14,7 +14,7 @@ const PostWhatsAppNumbers = async ({
   entries: WhatsAppEntry;
   user_id: string;
 }) => {
-  const supabase = createServer();
+  const supabase = await createServer();
 
   const { error }: any = await supabase
     .from("whatsapp")
