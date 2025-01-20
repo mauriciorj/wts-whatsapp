@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
 // import { z } from "zod";
-// import { signupSchema } from "@/lib/validations/auth";
+import { signupSchema } from "@/lib/validations/auth";
 import { AuthCard } from "@/components/auth/auth-card";
 import { AlertBanner } from "@/components/ui/alert-banner";
 import { Button } from "@/components/ui/button";
@@ -41,6 +41,9 @@ export default function CriarConta() {
       cardNumber: "",
       expiryDate: "",
       cvc: "",
+    },
+    validators: {
+      onChange: signupSchema,
     },
     onSubmit: async ({ value }: any) => {
       setServerError(null);
@@ -85,12 +88,14 @@ export default function CriarConta() {
         </AuthCard>
       )}
       {successMessage ? (
-        <AuthCard className="border-0">
-          <AlertBanner
-            type="success"
-            message="Conta criada com sucesso, por favor verifique o seu e-mail."
-          />
-        </AuthCard>
+        <div className="h-full">
+          <AuthCard className="border-0">
+            <AlertBanner
+              type="success"
+              message="Conta criada com sucesso, por favor verifique o seu e-mail."
+            />
+          </AuthCard>
+        </div>
       ) : (
         <AuthCard>
           <div className="space-y-6">
@@ -114,6 +119,7 @@ export default function CriarConta() {
                       <Label htmlFor="firstName">Primeiro nome</Label>
                       <Input
                         id="firstName"
+                        maxLength={50}
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
@@ -133,6 +139,7 @@ export default function CriarConta() {
                       <Label htmlFor="lastName">Último nome</Label>
                       <Input
                         id="lastName"
+                        maxLength={50}
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
@@ -176,6 +183,7 @@ export default function CriarConta() {
                     <Label htmlFor="password">Senha</Label>
                     <Input
                       id="password"
+                      maxLength={20}
                       type={isShowPassword ? "text" : "password"}
                       value={field.state.value}
                       onBlur={field.handleBlur}
@@ -250,7 +258,15 @@ export default function CriarConta() {
                         placeholder="1234 5678 9012 3456"
                         value={field.state.value}
                         onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
+                        onChange={(e) => {
+                          const re = /^[0-9\b]+$/;
+                          if (
+                            e.target.value === "" ||
+                            re.test(e.target.value)
+                          ) {
+                            field.handleChange(e.target.value);
+                          }
+                        }}
                         required
                       />
                       {field.state.meta.errors && (
@@ -272,7 +288,15 @@ export default function CriarConta() {
                           placeholder="MM/YY"
                           value={field.state.value}
                           onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
+                          onChange={(e) => {
+                            let value = e.target.value.replace(/\D/g, "");
+                            console.log("value => ", value);
+                            if (value.length >= 2) {
+                              value =
+                                value.slice(0, 2) + "/" + value.slice(2, 4);
+                            }
+                            field.handleChange(value);
+                          }}
                           required
                         />
                         {field.state.meta.errors && (
@@ -293,7 +317,15 @@ export default function CriarConta() {
                           placeholder="123"
                           value={field.state.value}
                           onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
+                          onChange={(e) => {
+                            const re = /^[0-9\b]+$/;
+                            if (
+                              e.target.value === "" ||
+                              re.test(e.target.value)
+                            ) {
+                              field.handleChange(e.target.value);
+                            }
+                          }}
                           required
                         />
                         {field.state.meta.errors && (

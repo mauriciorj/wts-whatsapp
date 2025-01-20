@@ -1,7 +1,7 @@
 const PasswordRulesValidation = (str: string) => {
   const rules = {} as any;
 
-  if (str.length >= 8) {
+  if (str.length >= 8 && str.length <= 20) {
     rules.rule1 = true;
   } else {
     rules.rule1 = false;

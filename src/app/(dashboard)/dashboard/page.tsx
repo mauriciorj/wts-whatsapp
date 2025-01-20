@@ -1,18 +1,15 @@
-"use client";
+import { UsageCharts } from "@/components/dashboard/usageCharts";
+import GetUser from "@/actions/getUser/actions";
+import GetUserProfile from "@/actions/getUserProfile/actions";
+import { PageTitle } from "@/components/dashboard/pageTitle";
 
-import { UsageChart } from "@/components/dashboard/usage-chart";
-import { RecentActivity } from "@/components/dashboard/recent-activity";
-
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const data = await GetUser();
+  const userData = await GetUserProfile({ userId: data?.user?.id });
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold">Bem vindo, John</h1>
-        <p className="text-muted-foreground mt-2">Seu Dashboard com as últimas informações</p>
-      </div>
-
-      <UsageChart />
-      <RecentActivity />
+      <PageTitle userName={userData?.first_name} />
+      <UsageCharts userId={userData?.user_id} />
     </div>
   );
 }

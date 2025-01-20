@@ -66,6 +66,7 @@ export default function LoginPage() {
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
+                      required
                     />
                     {field.state.meta.errors && (
                       <p className="text-sm text-destructive">
@@ -87,6 +88,7 @@ export default function LoginPage() {
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
+                      required
                     />
                     {isShowPassword ? (
                       <div

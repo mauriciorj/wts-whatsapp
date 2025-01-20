@@ -24,7 +24,7 @@ const PasswordRules = ({
             }`}
           >
             <div className="mr-1 w-[20px]">{rule1 ? <Check /> : null}</div>
-            Deve ter entre 8 e 30 caracteres
+            Deve ter entre 8 e 20 caracteres
           </li>
           <li
             className={`ml-1 flex items-center text-sm font-medium ${
