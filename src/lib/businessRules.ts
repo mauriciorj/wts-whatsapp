@@ -1,4 +1,4 @@
-export const PlansInfo = {
+export const PlansInfo: any = {
   basic: {
     maxNumbers: 2,
   },
