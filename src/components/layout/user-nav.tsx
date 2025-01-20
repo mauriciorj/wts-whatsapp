@@ -1,8 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { createClient } from '@/db/supabase/client';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { createClient } from "@/db/supabase/client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,11 +9,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, LogOut } from "lucide-react";
+import { User, LogOut, Settings } from "lucide-react";
 
 export function UserNav() {
   const router = useRouter();
-  const initials = "JD"; // Get from user data
 
   const handleSignOut = async () => {
     const supabase = createClient();
@@ -27,10 +25,7 @@ export function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="h-8 w-8 cursor-pointer">
-          <AvatarImage src="/avatars/user.png" alt="User" />
-          <AvatarFallback>{initials}</AvatarFallback>
-        </Avatar>
+        <Settings />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuItem

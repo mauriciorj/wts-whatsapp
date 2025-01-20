@@ -1,23 +1,20 @@
+"use client";
+
 import Link from "next/link";
-import { createServer } from "@/db/supabase/server";
-import { UserNav } from "./user-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { UserNav } from "./user-nav";
 import { Button } from "../ui/button";
 
-export async function Header() {
-  const supabase = await createServer();
-  const { data } = await supabase.auth.getUser();
-  console.log('data => ', data)
-
+export function Header({ userData }: any) {
   return (
     <header className="fixed top-0 w-full bg-background/80 backdrop-blur-sm border-b z-50">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="pl-12 md:pl-0 text-xl font-bold">
+      <div className="pl-10 pr-5 h-16 flex items-center justify-between">
+        <Link href="/" className="pl-12 md:pl-0 text-3xl font-bold">
           WhatsApp
         </Link>
         <div className="flex items-center gap-4">
           <ThemeToggle />
-          {data?.user?.email ? (
+          {userData ? (
             <>
               <Button asChild>
                 <Link href="/dashboard">Dashboard</Link>

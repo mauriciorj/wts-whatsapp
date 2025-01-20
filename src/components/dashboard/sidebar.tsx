@@ -37,7 +37,7 @@ export function Sidebar() {
 
       <div
         className={cn(
-          "fixed md:relative md:h-svh left-0 top-16 md:top-0 h-full bg-white w-64 border-r p-6 transition-transform duration-200 ease-in-out md:translate-x-0 z-10",
+          "fixed md:relative md:h-svh left-0 top-16 md:top-0 h-full w-64 border-r p-6 transition-transform duration-200 ease-in-out md:translate-x-0 z-10",
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}
       >
