@@ -36,10 +36,6 @@ export function WhatsAppNumbers({
   const [mutationError, setMutationError] = useState<boolean>(false);
   const [mutationSuccess, setMutationSuccess] = useState<boolean>(false);
 
-  const [value, setValue] = useState();
-
-  console.log("value ==> ", value);
-
   const mutation = useMutation({
     mutationFn: (entries) =>
       PostWhatsAppNumbers({ entries, user_id: userInfo?.user_id } as any),
@@ -56,15 +52,14 @@ export function WhatsAppNumbers({
     const errors: any = [];
     entries?.map((entry) => {
       let numberError = null;
-      let messageError = null;
       if (entry.number && entry.message) {
-        errors.push({ numberError, messageError });
+        errors.push({ numberError });
       } else {
         if (!entry.number) {
           numberError = "Número obrigatório";
           hasError = true;
         }
-        errors.push({ numberError, messageError });
+        errors.push({ numberError });
       }
     });
     setErrorsMessages(errors);
@@ -143,10 +138,8 @@ export function WhatsAppNumbers({
                   defaultCountry="BR"
                   countryCallingCodeEditable={false}
                   placeholder="Insira o número de telefone"
-                  // value={value}
                   value={entry.number}
-                  // onChange={setValue}
-                  onChange={(e) => handleUpdate(index, "number", e)}
+                  onChange={(e: any) => handleUpdate(index, "number", e)}
                   flags={flags}
                   labels={pt}
                   numberInputProps={{
@@ -157,7 +150,9 @@ export function WhatsAppNumbers({
               </div>
               <Textarea
                 value={entry.message}
-                onChange={(e) => handleUpdate(index, "message", e.target.value)}
+                onChange={(e: any) =>
+                  handleUpdate(index, "message", e.target.value)
+                }
                 placeholder="Sua mensagem aqui..."
                 maxLength={200}
                 onFocusCapture={() => setIsOnFocus(index)}

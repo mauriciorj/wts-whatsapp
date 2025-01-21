@@ -1,8 +1,6 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
-
-export const privacySections = [
+const refundPolicySections = [
   {
     title: "Política de Reembolso",
     content: [
@@ -44,7 +42,7 @@ export default function PrivacyContent() {
         Última atualização: 20 de Dezembro de 2024
       </p>
 
-      {privacySections.map((section, index) => (
+      {refundPolicySections.map((section, index) => (
         <section key={index} className="space-y-4">
           <h2 className="text-2xl font-semibold">{section.title}</h2>
           <div className="space-y-4 text-muted-foreground">

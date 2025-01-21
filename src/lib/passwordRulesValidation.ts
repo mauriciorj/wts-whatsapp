@@ -25,7 +25,6 @@ const PasswordRulesValidation = (str: string) => {
     rules.rule4 = false;
   }
 
-  // eslint-disable-next-line no-useless-escape
   if (/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(str)) {
     rules.rule5 = true;
   } else {

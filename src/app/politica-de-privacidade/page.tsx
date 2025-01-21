@@ -1,8 +1,6 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
-
-export const privacySections = [
+const privacySections = [
   {
     title: "Política de Privacidade",
     content: [

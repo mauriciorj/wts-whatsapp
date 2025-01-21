@@ -19,7 +19,7 @@ const LoginUser = async (formData: { email: string; password: string }) => {
     if (error) {
       return false;
     }
-  } catch (error) {
+  } catch {
     return false;
   }
 

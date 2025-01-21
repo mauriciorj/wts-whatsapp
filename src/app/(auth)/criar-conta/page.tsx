@@ -71,7 +71,7 @@ export default function CriarConta() {
         } else {
           setSuccessMessage(true);
         }
-      } catch (e) {
+      } catch {
         setServerErrorMessage(
           "Ops... algo deu errado. Por favor tente de novo."
         );
@@ -122,7 +122,9 @@ export default function CriarConta() {
                         maxLength={50}
                         value={field.state.value}
                         onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
+                        onChange={(e: any) =>
+                          field.handleChange(e.target.value)
+                        }
                         required
                       />
                       {field.state.meta.errors && (
@@ -142,7 +144,9 @@ export default function CriarConta() {
                         maxLength={50}
                         value={field.state.value}
                         onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
+                        onChange={(e: any) =>
+                          field.handleChange(e.target.value)
+                        }
                         required
                       />
                       {field.state.meta.errors && (
@@ -165,7 +169,7 @@ export default function CriarConta() {
                       placeholder="name@example.com"
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
+                      onChange={(e: any) => field.handleChange(e.target.value)}
                       required
                     />
                     {field.state.meta.errors && (
@@ -187,7 +191,7 @@ export default function CriarConta() {
                       type={isShowPassword ? "text" : "password"}
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         field.handleChange(e.target.value);
                         const checkRules = PasswordRulesValidation(
                           e.target.value
@@ -234,7 +238,7 @@ export default function CriarConta() {
                       id="plan"
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
+                      onChange={(e: any) => field.handleChange(e.target.value)}
                       readOnly
                       disabled
                     />
@@ -258,7 +262,7 @@ export default function CriarConta() {
                         placeholder="1234 5678 9012 3456"
                         value={field.state.value}
                         onBlur={field.handleBlur}
-                        onChange={(e) => {
+                        onChange={(e: any) => {
                           const re = /^[0-9\b]+$/;
                           if (
                             e.target.value === "" ||
@@ -288,7 +292,7 @@ export default function CriarConta() {
                           placeholder="MM/YY"
                           value={field.state.value}
                           onBlur={field.handleBlur}
-                          onChange={(e) => {
+                          onChange={(e: any) => {
                             let value = e.target.value.replace(/\D/g, "");
                             console.log("value => ", value);
                             if (value.length >= 2) {
@@ -317,7 +321,7 @@ export default function CriarConta() {
                           placeholder="123"
                           value={field.state.value}
                           onBlur={field.handleBlur}
-                          onChange={(e) => {
+                          onChange={(e: any) => {
                             const re = /^[0-9\b]+$/;
                             if (
                               e.target.value === "" ||

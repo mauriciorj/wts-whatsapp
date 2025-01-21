@@ -1,8 +1,6 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
-
-export const privacySections = [
+const aboutSections = [
   {
     title: "Sobre nós",
     content: [
@@ -19,7 +17,7 @@ export const privacySections = [
 export default function Sobre() {
   return (
     <div className="mb-24 p-8 space-y-8">
-      {privacySections.map((section, index) => (
+      {aboutSections.map((section, index) => (
         <section key={index} className="space-y-4">
           <h2 className="text-2xl font-semibold">{section.title}</h2>
           <div className="space-y-4 text-muted-foreground">

@@ -64,13 +64,13 @@ const getGroupedCounts: any = (data: any) => {
   const reportPerCountryAndCity: any[] = [];
 
   // Transform the Report Per Date
-  //   for (const [key, value] of Object.entries(getReportPerDay)) {
-  //     reportPerDay.push({ date: key, clicks: value });
-  //   }
-  //   reportPerDay.sort(
-  //     (a: { [key: string]: number }, b: { [key: string]: number }) =>
-  //       a.date - b.date
-  //   );
+    for (const [key, value] of Object.entries(getReportPerDay)) {
+      reportPerDay.push({ date: key, clicks: value });
+    }
+    reportPerDay.sort(
+      (a: { [key: string]: number }, b: { [key: string]: number }) =>
+        a.date - b.date
+    );
 
   // Transform the Report Per Device Size
   //   for (const [key, value] of Object.entries(getReportPerDeviceSize)) {

@@ -21,3 +21,7 @@ export const signupSchema = z.object({
     .regex(/^(0[1-9]|1[0-2])\/([0-9]{2})$/, "Data inválida"),
   cvc: z.string().regex(/^\d{3,4}$/, "Número inválido"),
 });
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email("Endereço de email inválido"),
+});

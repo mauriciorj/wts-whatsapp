@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { z } from "zod";
 import Link from "next/link";
 import { AlertBanner } from "@/components/ui/alert-banner";
 import { AuthCard } from "@/components/auth/auth-card";
@@ -9,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import LoginUser from "@/db/actions/login/actions";
-import { loginSchema } from "@/lib/validations/auth";
 import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "@tanstack/react-form";
 
@@ -65,7 +63,7 @@ export default function LoginPage() {
                       placeholder="name@example.com"
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
+                      onChange={(e: any) => field.handleChange(e.target.value)}
                       required
                     />
                     {field.state.meta.errors && (
@@ -87,7 +85,7 @@ export default function LoginPage() {
                       type={isShowPassword ? "text" : "password"}
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
+                      onChange={(e: any) => field.handleChange(e.target.value)}
                       required
                     />
                     {isShowPassword ? (

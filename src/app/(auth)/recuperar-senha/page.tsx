@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
-import { z } from "zod";
 import { AuthCard } from "@/components/auth/auth-card";
 import { AlertBanner } from "@/components/ui/alert-banner";
 import { Button } from "@/components/ui/button";
@@ -11,19 +10,15 @@ import { Label } from "@/components/ui/label";
 import ResetPasswordForEmail from "@/db/actions/resetPasswordForEmail/actions";
 import Link from "next/link";
 
-const forgotPasswordSchema = z.object({
-  email: z.string().email("Endereço de email inválido"),
-});
-
 export default function ForgotPasswordPage() {
   const [serverError, setServerError] = useState<boolean | null>(null);
   const [successMessage, setSuccessMessage] = useState<boolean | null>(null);
 
-  const form = useForm({
+  const form: any = useForm({
     defaultValues: {
       email: "",
     },
-    onSubmit: async ({ values }: any) => {
+    onSubmit: async ({ value }: any) => {
       try {
         const response = await ResetPasswordForEmail(
           value as { email: string }
@@ -33,7 +28,7 @@ export default function ForgotPasswordPage() {
         } else {
           setSuccessMessage(true);
         }
-      } catch (e) {
+      } catch {
         setServerError(true);
       }
     },
@@ -71,7 +66,7 @@ export default function ForgotPasswordPage() {
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <form.Field name="email">
-                    {(field) => (
+                    {(field: any) => (
                       <>
                         <Input
                           id="email"
@@ -79,7 +74,9 @@ export default function ForgotPasswordPage() {
                           placeholder="name@example.com"
                           value={field.state.value}
                           onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
+                          onChange={(e: any) =>
+                            field.handleChange(e.target.value)
+                          }
                         />
                         {field.state.meta.errors && (
                           <p className="text-sm text-destructive">
