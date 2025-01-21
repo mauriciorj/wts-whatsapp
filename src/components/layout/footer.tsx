@@ -16,7 +16,7 @@ export function Footer() {
       <div className="container mx-auto px-4">
         <div className="mb-12">
           <Link href="/" className="text-xl font-bold">
-            WhatsApp
+            Zap<span className="text-destructive">Router</span>
           </Link>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-8">

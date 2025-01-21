@@ -10,7 +10,7 @@ import GetUserProfile from "@/actions/getUserProfile/actions";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Super Zap",
+  title: "ZapRouter",
   description: "Um link, muitos whatsapps",
 };
 

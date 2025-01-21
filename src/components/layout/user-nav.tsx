@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { createClient } from "@/db/supabase/client";
 import {
   DropdownMenu,
@@ -13,6 +13,7 @@ import { User, LogOut, Settings } from "lucide-react";
 
 export function UserNav() {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleSignOut = async () => {
     const supabase = createClient();
@@ -21,6 +22,9 @@ export function UserNav() {
       router.refresh();
     }
   };
+  const isInsideDashboard = Boolean(pathname.split("/")[1] === "dashboard");
+
+  if (!isInsideDashboard) return null;
 
   return (
     <DropdownMenu>

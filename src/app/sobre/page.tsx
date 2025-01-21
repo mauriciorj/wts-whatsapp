@@ -4,7 +4,7 @@ const aboutSections = [
   {
     title: "Sobre nós",
     content: [
-      "Bem-vindo ao [Nome do SaaS]! Somos uma equipe apaixonada por tecnologia e inovação, dedicada a criar soluções que simplifiquem e otimizem a interação entre empresas e seus clientes.",
+      "Bem-vindo ao ZapRouter! Somos uma equipe apaixonada por tecnologia e inovação, dedicada a criar soluções que simplifiquem e otimizem a interação entre empresas e seus clientes.",
       "Nosso propósito é facilitar a gestão de campanhas que utilizam o WhatsApp como canal principal de comunicação. Desenvolvemos uma plataforma inteligente que distribui, de forma linear e equilibrada, o redirecionamento de clientes entre números cadastrados. Isso não só aumenta a eficiência do atendimento, como também reduz os riscos de bloqueios no WhatsApp.",
       "Acreditamos que a conexão com o cliente deve ser simples, fluida e sem barreiras. É por isso que trabalhamos para oferecer uma ferramenta confiável, segura e intuitiva, que atende às necessidades de empreendedores e empresas de todos os portes.",
       "Nossa missão é potencializar seus resultados, permitindo que você foque no que realmente importa: crescer e fortalecer sua relação com o cliente.",

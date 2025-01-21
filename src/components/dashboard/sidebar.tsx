@@ -24,6 +24,10 @@ export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
+  const isInsideDashboard = Boolean(pathname.split("/")[1] === "dashboard");
+
+  if (!isInsideDashboard) return null;
+
   return (
     <>
       <Button
@@ -37,7 +41,7 @@ export function Sidebar() {
 
       <div
         className={cn(
-          "fixed md:relative md:h-svh left-0 top-16 md:top-0 h-full w-64 border-r p-6 transition-transform duration-200 ease-in-out md:translate-x-0 z-10",
+          "fixed md:relative md:h-svh left-0 top-16 md:top-0 h-full w-64 border-r p-6 transition-transform duration-200 ease-in-out md:translate-x-0 z-10 bg-background" ,
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}
       >
@@ -56,6 +60,7 @@ export function Sidebar() {
                     "flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors",
                     pathname === item.href && "bg-secondary text-foreground"
                   )}
+                  onClick={() => setIsOpen(false)}
                 >
                   <Icon className="h-5 w-5" />
                   {item.label}

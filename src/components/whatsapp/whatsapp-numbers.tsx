@@ -79,7 +79,7 @@ export function WhatsAppNumbers({
     if (!hasErrors) {
       setMutationSuccess(false);
       setMutationError(false);
-      if (!entries) {
+      if (!entries?.length) {
         seEntries([{ number: "", message: "" }]);
       } else {
       }
@@ -112,7 +112,7 @@ export function WhatsAppNumbers({
   return (
     <Card className="p-6">
       <h2 className="text-xl font-semibold mb-4">Numeros de WhatsApp</h2>
-      <div>
+      <div className="hidden invisible md:block md:visible">
         {!entries ? (
           <div className="flex flex-col w-full items-center py-5">
             <div className="px-8 py-5 text-center text-destructive font-bold border rounded-md text-card-foreground shadow-sm">
@@ -216,6 +216,107 @@ export function WhatsAppNumbers({
               {mutation.isPending ? "Salvando..." : "Salvar alterações"}
             </Button>
             <div className="w-[18px]"> </div>
+          </div>
+        </div>
+      </div>
+      <div className="w-full block visible md:hidden md:invisible">
+        {!entries && (
+          <div className="flex flex-col w-full items-center py-5">
+            <div className="px-8 py-5 text-center text-destructive font-bold border rounded-md text-card-foreground shadow-sm">
+              <p>Você não tem nenhum número cadastrado!</p>Por favor cadastre um
+              número para começar.
+            </div>
+          </div>
+        )}
+        {entries?.map((entry, index) => (
+          <div key={index} className="mt-6">
+            <div className="flex flex-col gap-4">
+              <div className="w-full">
+                <PhoneInput
+                  international
+                  defaultCountry="BR"
+                  countryCallingCodeEditable={false}
+                  placeholder="Insira o número de telefone"
+                  value={entry.number}
+                  onChange={(e: any) => handleUpdate(index, "number", e)}
+                  flags={flags}
+                  labels={pt}
+                  numberInputProps={{
+                    className:
+                      "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                  }}
+                />
+              </div>
+              <div className="w-full flex flex-row">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="w-[50px] mr-6"
+                  onClick={() => handleRemove(index)}
+                >
+                  <Trash2 className="h-5 w-5 text-destructive" />
+                </Button>
+                <Textarea
+                  value={entry.message}
+                  onChange={(e: any) =>
+                    handleUpdate(index, "message", e.target.value)
+                  }
+                  placeholder="Sua mensagem aqui..."
+                  maxLength={200}
+                  onFocusCapture={() => setIsOnFocus(index)}
+                  onBlur={() => setIsOnFocus(null)}
+                />
+              </div>
+            </div>
+            <div className="w-full h-6 text-right pr-10 mt-2 text-sm">
+              {isOnFocus === index && <>{entry.message?.length} / 200</>}
+            </div>
+            <div className="mt-1">
+              <div className="flex gap-4">
+                <div className="w-full">
+                  {errorsMessages[index] &&
+                    errorsMessages[index]?.numberError && (
+                      <p className="text-sm text-destructive">
+                        {errorsMessages[index].numberError || ""}
+                      </p>
+                    )}
+                </div>
+                <div className="w-full">
+                  {errorsMessages[index] &&
+                    errorsMessages[index]?.messageError && (
+                      <p className="text-sm text-destructive">
+                        {errorsMessages[index].messageError || ""}
+                      </p>
+                    )}
+                </div>
+                <div className="w-[18px]"> </div>
+              </div>
+            </div>
+          </div>
+        ))}
+        <div className="flex flex-row w-full justify-end mt-8">
+          <div className="flex gap-4 items-center">
+            <div className="">
+              {mutationSuccess ? (
+                <div className="text-success">Informações Salvas!</div>
+              ) : null}
+              {mutationError ? (
+                <div className="text-destructive">
+                  Ops... Algo deu erro. Por favor tente mais tarde.
+                </div>
+              ) : null}
+            </div>
+            {Boolean(!entries || entries?.length < maxNumbers) && (
+              <Button variant="outline" onClick={handleAdd}>
+                <div className="flex flex-row items-center">
+                  <span>Adicionar Número</span>{" "}
+                  <Plus className="h-4 w-4 ml-2" />
+                </div>
+              </Button>
+            )}
+            <Button onClick={handleSave}>
+              {mutation.isPending ? "Salvando..." : "Salvar alterações"}
+            </Button>
           </div>
         </div>
       </div>

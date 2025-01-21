@@ -12,7 +12,7 @@ import whatsapp_light from "@/images/whatsapp_light.webp";
 import Link from "next/link";
 
 export default function Home() {
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
   return (
     <>
       {/* Hero Section */}
@@ -30,23 +30,23 @@ export default function Home() {
                 </b>
                 .
               </p>
-              <Link href="#planos">
+              <Link href="/#planos">
                 <Button size="lg">
                   Começar <ArrowRight className="ml-2" />
                 </Button>
               </Link>
             </div>
             <div className="border-0 relative h-[500px]">
-              {theme === "dark" ? (
+              {resolvedTheme === "dark" ? (
                 <Image
                   src={whatsapp_dark}
-                  alt="WhatsApp Interface"
+                  alt="ZapRouter Interface"
                   className="border-0"
                 />
               ) : (
                 <Image
                   src={whatsapp_light}
-                  alt="WhatsApp Interface"
+                  alt="ZapRouter Interface"
                   className="border-0"
                 />
               )}

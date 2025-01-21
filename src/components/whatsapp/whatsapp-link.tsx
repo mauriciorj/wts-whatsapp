@@ -9,7 +9,7 @@ import { Check } from "lucide-react";
 export function WhatsAppLink({ link }: { link: string }) {
   const [isCopied, setIsCopied] = useState(false);
 
-  const baseLink = `http://site.com/wp/${link}`;
+  const baseLink = `https://wp.zaprouter.pro/${link}`;
 
   const copyToClipboard = () => {
     if (link) {

@@ -13,7 +13,7 @@ import {
 
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
-  const { setTheme, theme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -26,10 +26,10 @@ export function ThemeToggle() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon">
-          {theme === "dark" ? (
-            <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          {resolvedTheme === "dark" ? (
+            <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 color-slate-100"/>
           ) : (
-            <Moon className="absolute h-[1.2rem] w-[1.2rem]  transition-all dark:rotate-0 dark:scale-100 color-slate-800" color="#333333"/>
+            <Moon className="absolute h-[1.2rem] w-[1.2rem]  transition-all dark:rotate-0 dark:scale-100 color-slate-800"/>
           )}
           <span className="sr-only">Toggle theme</span>
         </Button>

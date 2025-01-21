@@ -6,6 +6,7 @@ import {
   XAxis,
   YAxis,
   Tooltip,
+  Legend,
   ResponsiveContainer,
 } from "recharts";
 // import {
@@ -71,58 +72,65 @@ export function UsageCharts({ userId }: { userId: string }) {
       // }
     }
   }, [data]);
-
+  console.log("reportPerDayData", reportPerDayData);
   return (
     <>
-      <div className="w-full h-[300px] bg-card p-6 rounded-lg">
+      <div className="w-full h-[300px] bg-card py-6 rounded-lg">
+        <div className="w-full flex justify-end mt-6">
+          <div className="w-full md:w-fit flex flex-row mb-5 items-center justify-end">
+            <div className="flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm mr-2 hover:bg-accent cursor-pointer">
+              <RefreshCcw className="h-5 w-5" />
+            </div>
+            <Select
+              onValueChange={(e) => setReportPeriod(parseInt(e))}
+              defaultValue={reportPeriod.toString()}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="7 dias" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="7">Periodo: 7 dias</SelectItem>
+                <SelectItem value="14">Periodo: 14 dias</SelectItem>
+                <SelectItem value="30">Periodo: 30 dias</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
         <div className="w-full flex flex-row justify-between mb-5">
           <div className="flex flex-row items-center mb-4">
             <MousePointerClick className="mr-2 h-8 w-8" />
             <h3 className="text-2xl font-semibold">Cliques por dia</h3>
           </div>
-          <div>
-            <div className="flex flex-row items-center space-y-2">
-              <div className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm mt-2 mr-2 hover:bg-accent cursor-pointer">
-                <div className="mr-5">Recarregar</div>
-                <RefreshCcw className="h-5 w-5" />
-              </div>
-              <Select
-                onValueChange={(e) => setReportPeriod(parseInt(e))}
-                defaultValue={reportPeriod.toString()}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="7 dias" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="7">Periodo: 7 dias</SelectItem>
-                  <SelectItem value="14">Periodo: 14 dias</SelectItem>
-                  <SelectItem value="30">Periodo: 30 dias</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
         </div>
-        {reportPerDayData?.length ? (
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={reportPerDayData}>
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Line
-                type="monotone"
-                dataKey="clicks"
-                stroke="hsl(var(--primary))"
-                strokeWidth={2}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        ) : (
-          <div className="w-full flex flex-col items-center justify-center h-[100px]">
-            <div className="border rounded-md py-5 px-7">
-              Sem dados para serem mostrados no momento.
+        <div className="w-full h-full">
+          {reportPerDayData?.length ? (
+            <ResponsiveContainer>
+              <LineChart data={reportPerDayData} margin={{ top: 0, right: 10, left: -20, bottom: 0 }}>
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip
+                  contentStyle={{ color: "black" }}
+                  labelStyle={{ color: "black" }}
+                  itemStyle={{ color: "black" }}
+                />
+                <Legend verticalAlign="top" />
+                <Line
+                  type="monotone"
+                  dataKey="clicks"
+                  stroke="hsl(var(--primary))"
+                  strokeWidth={2}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="w-full flex flex-col items-center justify-center h-[100px]">
+              <div className="border rounded-md py-5 px-7">
+                Sem dados para serem mostrados no momento.
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       {/* <div className="w-full bg-card p-6 rounded-lg">
         <div className="flex flex-row items-center mb-4">

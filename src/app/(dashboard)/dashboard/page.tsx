@@ -7,7 +7,7 @@ export default async function DashboardPage() {
   const data = await GetUser();
   const userData = await GetUserProfile({ userId: data?.user?.id });
   return (
-    <div className="space-y-8">
+    <div className="w-full">
       <PageTitle userName={userData?.first_name} />
       <UsageCharts userId={userData?.user_id} />
     </div>
