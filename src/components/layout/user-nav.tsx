@@ -10,12 +10,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User, LogOut, Settings } from "lucide-react";
+import { useState } from "react";
 
 export function UserNav() {
   const router = useRouter();
   const pathname = usePathname();
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const handleSignOut = async () => {
+    setIsLoading(true);
     const supabase = createClient();
     const { error } = await supabase.auth.signOut();
     if (!error) {
@@ -44,11 +48,11 @@ export function UserNav() {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          className="text-rose-600 cursor-pointer"
+          className="text-destructive cursor-pointer"
           onClick={() => handleSignOut()}
         >
           <LogOut className="mr-2 h-4 w-4" />
-          Log out
+          {isLoading ? "Saindo..." : "Log out"}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
