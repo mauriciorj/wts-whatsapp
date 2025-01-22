@@ -1,4 +1,5 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { geolocation } from "@vercel/functions";
+import { type NextRequest, NextResponse, userAgent } from "next/server";
 
 import { createServer } from "@/db/supabase/server";
 
@@ -46,13 +47,16 @@ export async function GET(request: NextRequest) {
       .update({ redirect_to: nextRedirectTo })
       .eq("id", data[0]["id"]);
 
+    const { city, country } = geolocation(request);
+    const { device, os } = userAgent(request)
+
     const trackingInfo = {
       user_id: id,
       number: whatsappNumbers[currentIndex]["number"],
-      country: "brazil",
-      city: "rio de janeiro",
-      device_system: "ios",
-      device_size: "mobile",
+      country: country,
+      city: city,
+      device_system: os.name,
+      device_size: device.type,
       link: pathname,
     };
 
