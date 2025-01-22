@@ -1,20 +1,76 @@
-import { createServer } from '@/db/supabase/server';
-import { revalidatePath } from 'next/cache';
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+import { createServer } from "@/db/supabase/server";
+
+type whatsappApp = {
+  id: string;
+  numbers: [
+    { number: string; message: string },
+    { number: string; message: string }
+  ];
+  redirect_to: number;
+  user_profile: { is_subscription_active: boolean };
+}[];
+
+export async function GET(request: NextRequest) {
   const supabase = await createServer();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const getRequestUrl = request.url;
 
-  if (user) {
-    await supabase.auth.signOut();
+  const url = new URL(getRequestUrl);
+  const pathname = url.pathname.split("/")[1];
+
+  // Fetch the Whatsapp's User's Info
+  const { data, error } = await supabase
+    .from("whatsapp")
+    .select(
+      "id, numbers,redirect_to, user_id, user_profile(is_subscription_active)"
+    )
+    .eq("link", pathname)
+    .returns<whatsappApp>();
+
+  if (error || !data?.length) {
+    return NextResponse.redirect(new URL("/not-found", request.url));
   }
 
-  revalidatePath('/', 'layout');
-  return NextResponse.redirect(new URL('/', req.url), {
-    status: 302,
-  });
+  const { id, numbers, redirect_to, user_profile } = data[0];
+
+  if (user_profile?.is_subscription_active) {
+    const whatsappNumbers = numbers;
+    const currentIndex = redirect_to || 0;
+    const nextRedirectTo = (currentIndex + 1) % whatsappNumbers?.length;
+
+    // Update the Whatsapp's next redirect_to index
+    await supabase
+      .from("whatsapp")
+      .update({ redirect_to: nextRedirectTo })
+      .eq("id", data[0]["id"]);
+
+    const trackingInfo = {
+      user_id: id,
+      number: whatsappNumbers[currentIndex]["number"],
+      country: "brazil",
+      city: "rio de janeiro",
+      device_system: "ios",
+      device_size: "mobile",
+      link: pathname,
+    };
+
+    await supabase.from("whatsapp_tracking").insert(trackingInfo);
+
+    let whatsappLink = "";
+
+    if (!whatsappNumbers[currentIndex]["message"]?.length) {
+      whatsappLink = `https://wa.me/${whatsappNumbers[currentIndex]["number"]}`;
+    } else {
+      const msg_encoded = encodeURIComponent(
+        whatsappNumbers[currentIndex]["message"]
+      );
+      whatsappLink = `https://wa.me/${whatsappNumbers[currentIndex]["number"]}?text=${msg_encoded}`;
+    }
+
+    return NextResponse.redirect(new URL(whatsappLink, request.url));
+  } else {
+    return NextResponse.redirect(new URL("/not-found", request.url));
+  }
 }

@@ -1,0 +1,9 @@
+{
+  "id": "83c0f1e0-e82f-414f-ba9c-140fbe38635e",
+  "numbers": [
+    { "number": "+5521999999999", "message": "aaaa" },
+    { "number": "+14379998866", "message": "" }
+  ],
+  "redirect_to": 0,
+  "user_profile": { "is_subscription_active": true }
+}
