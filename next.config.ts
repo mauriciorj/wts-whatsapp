@@ -3,8 +3,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/sobre",
-        destination: "/login",
+        source: "/:path",
+        destination: "/api/wp/:path",
         has: [{ type: "host", value: "wp" }],
       },
     ];
