@@ -28,7 +28,7 @@ export default function ContactPage() {
     resolver: zodResolver(contactSchema),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     setIsLoading(true);
     // Handle contact form submission here
     setIsSubmitted(true);
