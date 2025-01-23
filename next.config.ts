@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async rewrites() {
+  async redirects() {
     return [
       // These rewrites are checked after headers/redirects
       // and before all files including _next/public files which
@@ -9,6 +9,7 @@ const nextConfig = {
         source: "/:path",
         destination: "/api/wp/:path",
         has: [{ type: "host", key: "overrideMe", value: "wp.*" }],
+        permanent: true,
       },
     ];
   },
