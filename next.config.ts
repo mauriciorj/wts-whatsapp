@@ -6,9 +6,9 @@ const nextConfig = {
       // and before all files including _next/public files which
       // allows overriding page files
       {
-        source: "/:path",
-        destination: "/api/wp/:path",
-        has: [{ type: "host", key: "overrideMe", value: "wp.*" }],
+        source: "/sobre",
+        destination: "/login",
+        // has: [{ type: "host", key: "overrideMe", value: "wp.*" }],
       },
     ];
   },
