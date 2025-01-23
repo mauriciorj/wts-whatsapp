@@ -31,7 +31,6 @@ export default function ContactPage() {
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     // Handle contact form submission here
-    console.log(data);
     setIsSubmitted(true);
     setIsLoading(false);
   };
