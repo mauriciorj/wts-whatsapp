@@ -5,7 +5,13 @@ const nextConfig = {
       {
         source: "/:path",
         destination: "/api/wp/:path",
-        has: [{ type: "host", value: "wp*" }],
+        has: [
+          {
+            type: "header",
+            key: "x-forwarded-host",
+            value: "wp.zaprouter.pro",
+          },
+        ],
       },
     ];
   },

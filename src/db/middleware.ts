@@ -7,6 +7,11 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.includes(page)
   );
 
+  console.log('')
+  console.log('')
+  console.log('')
+  console.log('request', request)
+
   let supabaseResponse = NextResponse.next({
     request,
   });
