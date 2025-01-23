@@ -8,7 +8,7 @@ const nextConfig = {
         // allows overriding page files
         {
           source: "/:path",
-          destination: "/api/wp",
+          destination: "/api/wp/:path",
           has: [{ type: "host", key: "overrideMe", value: "wp.*" }],
         },
       ],
