@@ -5,7 +5,7 @@ const nextConfig = {
       {
         source: "/sobre",
         destination: "/login",
-        has: [{ type: "host", key: "overrideMe", value: "wp.*" }],
+        has: [{ type: "host", value: "wp" }],
       },
     ];
   },
