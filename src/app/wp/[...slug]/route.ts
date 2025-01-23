@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { geolocation } from "@vercel/functions";
 import { type NextRequest, NextResponse, userAgent } from "next/server";
 
@@ -19,7 +21,7 @@ export async function GET(request: NextRequest) {
   const getRequestUrl = request.url;
 
   const url = new URL(getRequestUrl);
-  const pathname = url.pathname.split("/")[1];
+  const pathname = url.pathname.split("/")[2];
 
   // Fetch the Whatsapp's User's Info
   const { data, error } = await supabase
@@ -48,7 +50,7 @@ export async function GET(request: NextRequest) {
       .eq("id", data[0]["id"]);
 
     const { city, country } = geolocation(request);
-    const { device, os } = userAgent(request)
+    const { device, os } = userAgent(request);
 
     const trackingInfo = {
       user_id: id,
