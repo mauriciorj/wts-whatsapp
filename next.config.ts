@@ -5,7 +5,7 @@ const nextConfig = {
       {
         source: "/:path",
         destination: "/api/wp/:path",
-        has: [{ type: "host", value: "wp" }],
+        has: [{ type: "host", value: "wp*" }],
       },
     ];
   },
