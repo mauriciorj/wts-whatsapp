@@ -3,13 +3,22 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/:path",
-        destination: "/api/wp/:path",
+        source: "/:path*",
+        destination: "/api/wp/:path*",
         has: [
           {
-            type: "header",
-            key: "x-forwarded-host",
-            value: "wp.zaprouter.pro",
+            type: "host",
+            value: "(?<wp>.+).zaprouter.pro",
+          },
+        ],
+      },
+      {
+        source: "/:path*",
+        destination: "/api/wp/:path*",
+        has: [
+          {
+            type: "host",
+            value: "(?<wp>.+).localhost",
           },
         ],
       },
