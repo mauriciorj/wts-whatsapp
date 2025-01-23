@@ -72,7 +72,7 @@ export function UsageCharts({ userId }: { userId: string }) {
       // }
     }
   }, [data]);
-  console.log("reportPerDayData", reportPerDayData);
+
   return (
     <>
       <div className="w-full h-[300px] bg-card py-6 rounded-lg">
@@ -106,7 +106,10 @@ export function UsageCharts({ userId }: { userId: string }) {
         <div className="w-full h-full">
           {reportPerDayData?.length ? (
             <ResponsiveContainer>
-              <LineChart data={reportPerDayData} margin={{ top: 0, right: 10, left: -20, bottom: 0 }}>
+              <LineChart
+                data={reportPerDayData}
+                margin={{ top: 0, right: 10, left: -20, bottom: 0 }}
+              >
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip
