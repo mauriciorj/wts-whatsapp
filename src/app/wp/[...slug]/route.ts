@@ -43,6 +43,10 @@ export async function GET(request: NextRequest) {
     const currentIndex = redirect_to || 0;
     const nextRedirectTo = (currentIndex + 1) % whatsappNumbers?.length;
 
+    const whatsappCurrentNumber = whatsappNumbers[currentIndex][
+      "number"
+    ]?.replace(/[^0-9]/g, "");
+
     // Update the Whatsapp's next redirect_to index
     await supabase
       .from("whatsapp")
@@ -54,7 +58,7 @@ export async function GET(request: NextRequest) {
 
     const trackingInfo = {
       user_id: id,
-      number: whatsappNumbers[currentIndex]["number"],
+      number: whatsappCurrentNumber,
       country: country,
       city: city,
       device_system: os.name,
@@ -67,12 +71,12 @@ export async function GET(request: NextRequest) {
     let whatsappLink = "";
 
     if (!whatsappNumbers[currentIndex]["message"]?.length) {
-      whatsappLink = `https://wa.me/${whatsappNumbers[currentIndex]["number"]}`;
+      whatsappLink = `https://wa.me/${whatsappCurrentNumber}`;
     } else {
       const msg_encoded = encodeURIComponent(
         whatsappNumbers[currentIndex]["message"]
       );
-      whatsappLink = `https://wa.me/${whatsappNumbers[currentIndex]["number"]}?text=${msg_encoded}`;
+      whatsappLink = `https://wa.me/${whatsappCurrentNumber}?text=${msg_encoded}`;
     }
 
     return NextResponse.redirect(new URL(whatsappLink, request.url));
