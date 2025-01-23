@@ -5,7 +5,7 @@ const nextConfig = {
       {
         source: "/sobre",
         destination: "/login",
-        has: [{ type: "host", value: "wp" }],
+        has: [{ type: "host", value: "wp.zaprouter.pro" }],
       },
     ];
   },
