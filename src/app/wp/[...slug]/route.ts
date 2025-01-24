@@ -11,6 +11,7 @@ type whatsappApp = {
     { number: string; message: string },
     { number: string; message: string }
   ];
+  user_id: string;
   redirect_to: number;
   user_profile: { is_subscription_active: boolean };
 }[];
@@ -36,7 +37,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL("/not-found", request.url));
   }
 
-  const { id, numbers, redirect_to, user_profile } = data[0];
+  const { id, numbers, redirect_to, user_profile, user_id } = data[0];
 
   if (user_profile?.is_subscription_active) {
     const whatsappNumbers = numbers;
@@ -51,13 +52,13 @@ export async function GET(request: NextRequest) {
     await supabase
       .from("whatsapp")
       .update({ redirect_to: nextRedirectTo })
-      .eq("id", data[0]["id"]);
+      .eq("id", id);
 
     const { city, country } = geolocation(request);
     const { device, os } = userAgent(request);
 
     const trackingInfo = {
-      user_id: id,
+      user_id: user_id,
       number: whatsappCurrentNumber,
       country: country,
       city: city,

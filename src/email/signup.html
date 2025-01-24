@@ -1,0 +1,48 @@
+<style>
+  a:link {
+    text-decoration: none;
+    color: white;
+  }
+
+  a:visited {
+    text-decoration: none;
+    color: white;
+  }
+
+  a:hover {
+    text-decoration: none;
+    color: white;
+  }
+
+  a:active {
+    text-decoration: none;
+    color: white;
+  }
+</style>
+<div style="padding: 10px">
+  <h2 style="font-size: 24px; color: black">
+    Zap<span style="color: red">Router</span>
+  </h2>
+</div>
+
+<div style="padding-left: 20px">
+  <p style="font-size: 20px">Olá, seja muito bem vindo a melhor ferramenta de redirecionamento de Whatsapp!</p>
+  <p style="font-size: 20px">Para confirmar a criação da sua conta, clique no link botão abaixo:</p>
+    <a
+      href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=signup&next=dashboard"
+      style="text-decoration: none; width: fit"
+      ><div
+        style="
+          color: white;
+          background: black;
+          width: fit-content;
+          padding: 15px 25px 15px 25px;
+          border-radius: 5px;
+          margin-top: 40px;
+        "
+      >
+        Confirmar email
+      </div></a
+    >
+    <p style="font-size: 14px; margin-top: 100px">Qualquer dúvida, por favor entre em contato através do nosso e-mail: contato@zaproute.pro</p>
+</div>

@@ -3,12 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
 // Mock user data - replace with actual data fetching
 const userData = {
@@ -24,8 +19,6 @@ export default function ProfilePage() {
 
   const handleResetPassword = async () => {
     setIsLoading(true);
-    // Handle password reset logic here
-    console.log("Password reset requested");
     setIsLoading(false);
   };
 
@@ -35,7 +28,7 @@ export default function ProfilePage() {
         <div className="container mx-auto max-w-3xl">
           <Card className="p-6">
             <h1 className="text-2xl font-bold mb-6">Perfil de Usuário</h1>
-            
+
             <Table>
               <TableBody>
                 <TableRow>
