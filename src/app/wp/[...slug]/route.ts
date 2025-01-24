@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
       country: country,
       city: city,
       device_system: os.name,
-      device_size: device.type,
+      device_size: device.type === "mobile" ? "mobile" : "desktop",
       link: pathname,
     };
 
