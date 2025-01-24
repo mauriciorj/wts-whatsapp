@@ -17,6 +17,8 @@ import {
 //   TableHeader,
 //   TableRow,
 // } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -34,7 +36,7 @@ import { useEffect, useState } from "react";
 import getGroupedCounts from "@/lib/formatReport";
 
 export function UsageCharts({ userId }: { userId: string }) {
-  const [reportPeriod, setReportPeriod] = useState(7);
+  const [reportPeriod, setReportPeriod] = useState<number>(7);
   const [reportPerDayData, setReportPerDayData] = useState<any>(null);
   // const [reportPerDeviceSizeData, setReportPerDeviceSizeData] =
   //   useState<any>(null);
@@ -43,11 +45,9 @@ export function UsageCharts({ userId }: { userId: string }) {
   // const [reportPerCountryAndCityData, setreportPerCountryAndCityData] =
   //   useState<any>(null);
 
-  const period = 7;
-
-  const { data } = useQuery({
-    queryKey: ["whatsappTracking"],
-    queryFn: async () => getWhatsappTracking({ userId, period }),
+  const { data, isFetching, refetch } = useQuery({
+    queryKey: ["whatsappTracking", reportPeriod],
+    queryFn: async () => getWhatsappTracking({ userId, period: reportPeriod }),
   });
 
   useEffect(() => {
@@ -78,8 +78,13 @@ export function UsageCharts({ userId }: { userId: string }) {
       <div className="w-full h-[300px] bg-card py-6 rounded-lg">
         <div className="w-full flex justify-end mt-6">
           <div className="w-full md:w-fit flex flex-row mb-5 items-center justify-end">
-            <div className="flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm mr-2 hover:bg-accent cursor-pointer">
-              <RefreshCcw className="h-5 w-5" />
+            <div
+              onClick={() => refetch()}
+              className="flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm mr-2 hover:bg-accent cursor-pointer"
+            >
+              <RefreshCcw
+                className={`${isFetching ? "animate-spin" : null} h-5 w-5`}
+              />
             </div>
             <Select
               onValueChange={(e) => setReportPeriod(parseInt(e))}
@@ -104,7 +109,15 @@ export function UsageCharts({ userId }: { userId: string }) {
           </div>
         </div>
         <div className="w-full h-full">
-          {reportPerDayData?.length ? (
+          {isFetching && (
+            <Card className="w-full h-[300px] p-6">
+              <Skeleton className="h-7 w-36 mb-4" /> {/* Chart title */}
+              <div className="h-[calc(100%-40px)]">
+                <Skeleton className="w-full h-full" /> {/* Chart area */}
+              </div>
+            </Card>
+          )}
+          {Boolean(reportPerDayData?.length) && !isFetching && (
             <ResponsiveContainer>
               <LineChart
                 data={reportPerDayData}
@@ -126,7 +139,8 @@ export function UsageCharts({ userId }: { userId: string }) {
                 />
               </LineChart>
             </ResponsiveContainer>
-          ) : (
+          )}
+          {Boolean(!reportPerDayData?.length) && !isFetching && (
             <div className="w-full flex flex-col items-center justify-center h-[100px]">
               <div className="border rounded-md py-5 px-7">
                 Sem dados para serem mostrados no momento.

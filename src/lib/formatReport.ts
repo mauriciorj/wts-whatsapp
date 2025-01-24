@@ -4,7 +4,7 @@ function formatDate(dateString: string) {
   const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-indexed
   const day = String(date.getUTCDate()).padStart(2, "0");
 
-  return `${day}/${month}`;
+  return `${month}/${day}`;
 }
 
 const getGroupedCounts: any = (data: any) => {
