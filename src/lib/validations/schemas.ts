@@ -4,6 +4,15 @@ export const loginSchema = z.object({
   email: z.string().email("Por favor insira um e-mail válido"),
 });
 
+export const updatePasswordSchema = z.object({
+  password: z
+    .string()
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
+      "Senha inválida"
+    ),
+});
+
 export const signupSchema = z.object({
   email: z.string().email("Por favor insira um e-mail válido"),
   password: z

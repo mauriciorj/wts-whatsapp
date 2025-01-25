@@ -22,7 +22,7 @@ type passValidationType = {
   rule5: boolean;
 };
 
-type passValuesType = {
+type formValuesType = {
   firstName: string;
   lastName: string;
   email: string;
@@ -68,7 +68,7 @@ const CriarConta = () => {
       setServerError(null);
       setServerErrorMessage(null);
       try {
-        const response = await CreateUserAccount(value as passValuesType);
+        const response = await CreateUserAccount(value as formValuesType);
         if (response?.status === 500) {
           setServerErrorMessage(
             "Ops... algo deu errado. Por favor tente de novo."

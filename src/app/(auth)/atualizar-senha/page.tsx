@@ -1,46 +1,95 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Eye, EyeOff, LoaderCircle } from "lucide-react";
-import LoginUser from "@/db/actions/login/actions";
+import UpdateUserPassword from "@/db/actions/updateUserPassword/actions";
+import { createClient } from "@/db/supabase/client";
 import AuthCard from "@/components/auth/auth-card";
+import PasswordRules from "@/components/auth/passwordRules";
 import { AlertBanner } from "@/components/ui/alert-banner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import PasswordRulesValidation from "@/lib/passwordRulesValidation";
+import { updatePasswordSchema } from "@/lib/validations/schemas";
 import { useForm } from "@tanstack/react-form";
 
-const Login = () => {
-  const [serverError, setServerError] = useState<boolean>(false);
+type passValidationType = {
+  rule1: boolean;
+  rule2: boolean;
+  rule3: boolean;
+  rule4: boolean;
+  rule5: boolean;
+};
+
+const ResetPassword = () => {
+  const router = useRouter();
+
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
+  const [serverError, setServerError] = useState<boolean | null>(null);
+  const [successMessage, setSuccessMessage] = useState<boolean | null>(null);
+  const [passwordValidation, setPasswordValidation] =
+    useState<passValidationType>({
+      rule1: false,
+      rule2: false,
+      rule3: false,
+      rule4: false,
+      rule5: false,
+    });
 
   const form = useForm({
     defaultValues: {
-      email: "",
       password: "",
     },
-    onSubmit: async ({ value }: any) => {
-      const response = await LoginUser(
-        value as { email: string; password: string }
-      );
-      if (response === false) {
+    validators: {
+      onSubmit: updatePasswordSchema,
+    },
+    onSubmit: async ({ value }) => {
+      try {
+        const response = await UpdateUserPassword(
+          value as { password: string }
+        );
+        if (response === false) {
+          setServerError(true);
+        } else {
+          setSuccessMessage(true);
+        }
+      } catch {
         setServerError(true);
       }
     },
   });
+
+  const handleSignOut = async () => {
+    const supabase = createClient();
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
+      router.refresh();
+    }
+  };
+
+  useEffect(() => {
+    if (successMessage) {
+      handleSignOut();
+    }
+  }, [successMessage]);
 
   return (
     <div className="pt-16 pb-16 px-4">
       <AuthCard>
         <div className="space-y-6">
           {serverError && (
-            <AlertBanner message="Usuário e/ou senha inválidos." type="error" />
+            <AlertBanner
+              message="Ops... algo deu errado. Tente novamente mais tarde ou entre em contato com o nosso suporte"
+              type="error"
+            />
           )}
           <div className="space-y-2 text-center">
-            <h1 className="text-2xl font-bold">Seja Bem Vindo</h1>
+            <h1 className="text-2xl font-bold">Crie uma senha nova</h1>
             <p className="text-muted-foreground">
-              Insira suas informações para acessar o sistema
+              Por favor insira uma senha nova para acessar o nosso sistema.
             </p>
           </div>
 
@@ -52,29 +101,6 @@ const Login = () => {
               setServerError(false);
             }}
           >
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <form.Field name="email">
-                {(field) => (
-                  <>
-                    <Input
-                      id="email"
-                      onBlur={field.handleBlur}
-                      onChange={(e: any) => field.handleChange(e.target.value)}
-                      placeholder="seuemail@exemplo.com"
-                      required
-                      type="email"
-                      value={field.state.value}
-                    />
-                    {field.state.meta.errors && (
-                      <p className="text-sm text-destructive">
-                        {field.state.meta.errors[0]}
-                      </p>
-                    )}
-                  </>
-                )}
-              </form.Field>
-            </div>
             <div className="space-y-2 relative">
               <Label htmlFor="password">Senha</Label>
               <form.Field name="password">
@@ -83,9 +109,19 @@ const Login = () => {
                     <Input
                       id="password"
                       onBlur={field.handleBlur}
-                      onChange={(e: any) => field.handleChange(e.target.value)}
-                      required
+                      onChange={(e: any) => {
+                        field.handleChange(e.target.value);
+                        const checkRules = PasswordRulesValidation(
+                          e.target.value
+                        );
+                        setPasswordValidation((prevState: any) => ({
+                          ...prevState,
+                          ...checkRules,
+                        }));
+                      }}
+                      maxLength={20}
                       type={isShowPassword ? "text" : "password"}
+                      required
                       value={field.state.value}
                     />
                     {isShowPassword ? (
@@ -111,14 +147,7 @@ const Login = () => {
                   </>
                 )}
               </form.Field>
-            </div>
-            <div className="text-right">
-              <Link
-                className="text-sm text-primary hover:underline"
-                href="/recuperar-senha"
-              >
-                Esqueceu sua senha?
-              </Link>
+              <PasswordRules passwordValidation={passwordValidation} />
             </div>
             <Button
               className="w-full"
@@ -135,7 +164,6 @@ const Login = () => {
               )}
             </Button>
           </form>
-
           <div className="text-center text-sm">
             Não tem uma conta?{" "}
             <Link className="text-primary hover:underline" href="/#planos">
@@ -148,4 +176,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

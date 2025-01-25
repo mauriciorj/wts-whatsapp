@@ -10,7 +10,7 @@ const ResetPasswordForEmail = async (formData: { email: string }) => {
   const { error } = await supabase.auth.resetPasswordForEmail(
     email.toLowerCase(),
     {
-      redirectTo: `https://www.wetracksales.com/update-password`,
+      redirectTo: `https://www.zaprouter.pro/atualizar-senha`,
     }
   );
 
