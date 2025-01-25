@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { LoaderCircle } from "lucide-react";
+import ContactWebForm from "@/actions/contactWebForm/actions";
 import AuthCard from "@/components/auth/auth-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,23 +12,43 @@ import { contactSchema } from "@/lib/validations/schemas";
 import { useForm } from "@tanstack/react-form";
 
 const Contato = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [isServerError, setIsServerError] = useState<boolean>(false);
 
   const form = useForm({
     defaultValues: {
       name: "",
       email: "",
       subject: "",
-      message: "basic",
+      message: "",
     },
     validators: {
-      onChange: contactSchema,
+      onSubmit: contactSchema,
     },
     onSubmit: async ({ value }: any) => {
       setIsLoading(true);
-      setIsSubmitted(true);
-      console.log("value", value);
+      try {
+        const response = await ContactWebForm(
+          value as {
+            email: string;
+            subject: string;
+            name: string;
+            message: string;
+          }
+        );
+        if (response === false) {
+          setIsServerError(true);
+          setIsLoading(false);
+        } else {
+          setIsServerError(false);
+          setIsSubmitted(true);
+          setIsLoading(false);
+        }
+      } catch {
+        setIsServerError(true);
+        setIsLoading(false);
+      }
     },
   });
 
@@ -152,10 +174,26 @@ const Contato = () => {
                   )}
                 </form.Field>
               </div>
-              <Button className="w-full" disabled={isLoading} type="submit">
-                {isLoading ? "Enviando..." : "Enviar Mensagem"}
+              <Button
+                className="w-full"
+                disabled={isLoading || isServerError}
+                type="submit"
+              >
+                {isLoading ? (
+                  <div className="flex flex-row items-center italic">
+                    Enviando...
+                    <LoaderCircle className="animate-spin h-5 w-5 ml-2" />
+                  </div>
+                ) : (
+                  "Enviar Mensagem"
+                )}
               </Button>
             </form>
+            {isServerError && (
+              <p className="text-sm text-destructive">
+                Ops... algo deu errado. Por favor tente novamente mais tarde.
+              </p>
+            )}
           </div>
         ) : (
           <div className="space-y-6 text-center">
@@ -166,7 +204,10 @@ const Contato = () => {
             </p>
             <Button
               className="w-full"
-              onClick={() => setIsSubmitted(false)}
+              onClick={() => {
+                setIsSubmitted(false);
+                form.reset();
+              }}
               variant="outline"
             >
               Enviar Outra Mensagem

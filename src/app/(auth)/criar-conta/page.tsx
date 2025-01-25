@@ -62,7 +62,7 @@ const CriarConta = () => {
       cvc: "",
     },
     validators: {
-      onChange: signupSchema,
+      onSubmit: signupSchema,
     },
     onSubmit: async ({ value }: any) => {
       setServerError(null);
