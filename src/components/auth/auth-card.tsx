@@ -5,10 +5,12 @@ interface AuthCardProps {
   className?: string;
 }
 
-export function AuthCard({ children, className = "" }: AuthCardProps) {
+const AuthCard = ({ children, className = "" }: AuthCardProps) => {
   return (
     <Card className={`w-full max-w-lg mx-auto p-8 ${className}`}>
       {children}
     </Card>
   );
-}
+};
+
+export default AuthCard;

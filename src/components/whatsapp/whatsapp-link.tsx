@@ -1,19 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Check, ClipboardCopy } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ClipboardCopy } from "lucide-react";
-import { Check } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export function WhatsAppLink({ link }: { link: string }) {
+const WhatsAppLink = ({
+  isLoading,
+  link,
+}: {
+  isLoading: boolean;
+  link: string;
+}) => {
   const [isCopied, setIsCopied] = useState(false);
 
-  const baseLink = `https://zaprouter.pro/wp/${link}`;
+  const baseLink = link ? `https://zaprouter.pro/wp/${link}` : "";
 
   const copyToClipboard = () => {
     if (link) {
-      // Copy the text inside the text field
       navigator.clipboard.writeText(baseLink);
       setIsCopied(true);
     }
@@ -32,12 +37,18 @@ export function WhatsAppLink({ link }: { link: string }) {
       <h2 className="text-xl font-semibold mb-4">Link de divulgação</h2>
       <div className="flex gap-4">
         <div className="w-full relative">
+          {isLoading && (
+            <div className="absolute left-3 top-2">
+              <Skeleton className="h-6 w-[270px]" />
+            </div>
+          )}
           <Input
-            id="myWhatsAppLink"
-            value={`${baseLink}`}
-            readOnly
             className="font-mono"
+            id="myWhatsAppLink"
+            readOnly
+            value={`${baseLink}`}
           />
+
           <div
             className="absolute right-2 top-[10px] cursor-pointer text-center justify-center"
             onClick={copyToClipboard}
@@ -52,4 +63,6 @@ export function WhatsAppLink({ link }: { link: string }) {
       </div>
     </Card>
   );
-}
+};
+
+export default WhatsAppLink;

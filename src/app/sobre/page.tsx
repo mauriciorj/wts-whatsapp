@@ -1,5 +1,3 @@
-"use client";
-
 const aboutSections = [
   {
     title: "Sobre nós",
@@ -14,11 +12,11 @@ const aboutSections = [
   },
 ];
 
-export default function Sobre() {
+const Sobre = async () => {
   return (
     <div className="mb-24 p-8 space-y-8">
       {aboutSections.map((section, index) => (
-        <section key={index} className="space-y-4">
+        <section className="space-y-4" key={index}>
           <h2 className="text-2xl font-semibold">{section.title}</h2>
           <div className="space-y-4 text-muted-foreground">
             {section.content.map((paragraph, pIndex) => (
@@ -29,4 +27,6 @@ export default function Sobre() {
       ))}
     </div>
   );
-}
+};
+
+export default Sobre;

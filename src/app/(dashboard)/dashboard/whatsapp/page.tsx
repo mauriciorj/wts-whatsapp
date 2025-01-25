@@ -1,16 +1,12 @@
 "use client";
 
-import { WhatsAppLink } from "@/components/whatsapp/whatsapp-link";
-import { WhatsAppNumbers } from "@/components/whatsapp/whatsapp-numbers";
-import {
-  WhatsAppLinkSkeleton,
-  WhatsAppNumbersSkeleton,
-} from "@/components/whatsapp/loading-skeleton";
-import { useQuery } from "@tanstack/react-query";
-import GetUserProfile from "@/actions/getUserProfile/actions";
 import GetUser from "@/actions/getUser/actions";
+import GetUserProfile from "@/actions/getUserProfile/actions";
+import WhatsAppLink from "@/components/whatsapp/whatsapp-link";
+import { WhatsAppNumbers } from "@/components/whatsapp/whatsapp-numbers";
+import { useQuery } from "@tanstack/react-query";
 
-export default function WhatsAppPage() {
+const WhatsAppPage = () => {
   const { data: userData, isLoading: userIsLoading } = useQuery({
     queryKey: ["user"],
     queryFn: async () => GetUser(),
@@ -25,20 +21,17 @@ export default function WhatsAppPage() {
   return (
     <div className="space-y-8">
       <h1 className="text-3xl font-bold">WhatsApp</h1>
-      {userIsLoading || userProfileIsLoading ? (
-        <>
-          <WhatsAppNumbersSkeleton />
-          <WhatsAppLinkSkeleton />
-        </>
-      ) : (
-        <>
-          <WhatsAppLink link={userProfileData?.whatsapp?.link} />
-          <WhatsAppNumbers
-            numbers={userProfileData?.whatsapp?.numbers}
-            userInfo={userProfileData}
-          />
-        </>
-      )}
+      <WhatsAppLink
+        isLoading={userIsLoading || userProfileIsLoading}
+        link={userProfileData?.whatsapp?.link}
+      />
+      <WhatsAppNumbers
+        isLoading={userIsLoading || userProfileIsLoading}
+        numbers={userProfileData?.whatsapp?.numbers}
+        userInfo={userProfileData}
+      />
     </div>
   );
-}
+};
+
+export default WhatsAppPage;

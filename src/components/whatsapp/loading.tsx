@@ -1,21 +1,7 @@
-"use client";
-
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function WhatsAppLinkSkeleton() {
-  return (
-    <Card className="p-6">
-      <Skeleton className="h-7 w-40 mb-4" />
-      <div className="flex gap-4">
-        <Skeleton className="h-10 flex-1" />
-        <Skeleton className="h-10 w-10" />
-      </div>
-    </Card>
-  );
-}
-
-export function WhatsAppNumbersSkeleton() {
+const WhatsAppNumbersLoading = () => {
   return (
     <Card className="p-6">
       <Skeleton className="h-7 w-48 mb-4" />
@@ -36,4 +22,6 @@ export function WhatsAppNumbersSkeleton() {
       </div>
     </Card>
   );
-}
+};
+
+export default WhatsAppNumbersLoading;

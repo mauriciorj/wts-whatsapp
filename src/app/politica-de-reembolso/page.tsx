@@ -1,5 +1,3 @@
-"use client";
-
 const refundPolicySections = [
   {
     title: "Política de Reembolso",
@@ -16,7 +14,7 @@ const refundPolicySections = [
   {
     title: "Como Solicitar o Reembolso",
     content: [
-      "Para iniciar o processo de reembolso, envie um e-mail para [email@example.com] com o seguinte assunto: Solicitação de Reembolso. No corpo do e-mail, inclua:",
+      "Para iniciar o processo de reembolso, envie um e-mail para contato@zaprouter.com com o seguinte assunto: Solicitação de Reembolso. No corpo do e-mail, inclua:",
       "- Seu nome completo;",
       "- O e-mail utilizado para cadastro na plataforma;",
       "- O motivo da solicitação (opcional, mas apreciamos o feedback para melhorar nossos serviços).",
@@ -35,7 +33,7 @@ const refundPolicySections = [
   },
 ];
 
-export default function PrivacyContent() {
+const PoliticaDeReembolso = async () => {
   return (
     <div className="mb-24 p-8 space-y-8">
       <p className="text-muted-foreground">
@@ -43,7 +41,7 @@ export default function PrivacyContent() {
       </p>
 
       {refundPolicySections.map((section, index) => (
-        <section key={index} className="space-y-4">
+        <section className="space-y-4" key={index}>
           <h2 className="text-2xl font-semibold">{section.title}</h2>
           <div className="space-y-4 text-muted-foreground">
             {section.content.map((paragraph, pIndex) => (
@@ -54,4 +52,6 @@ export default function PrivacyContent() {
       ))}
     </div>
   );
-}
+};
+
+export default PoliticaDeReembolso;

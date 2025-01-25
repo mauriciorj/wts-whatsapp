@@ -10,17 +10,17 @@ function formatDate(dateString: string) {
 const getGroupedCounts: any = (data: any) => {
   if (!data) return null;
   const getReportPerDay: { [key: string]: number } = {};
-  //   const getReportPerDeviceSize: { [key: string]: number } = {};
-  //   const getReportPerDeviceSystem: { [key: string]: number } = {};
-  //   const getReportPerCountryAndCity: {
-  //     [key: string]: { [key: string]: number };
-  //   } = {};
+  const getReportPerDeviceSize: { [key: string]: number } = {};
+  const getReportPerDeviceSystem: { [key: string]: number } = {};
+  const getReportPerCountryAndCity: {
+    [key: string]: { [key: string]: number };
+  } = {};
 
   data?.map((item: any) => {
-    // const city = item.city;
-    // const country = item.country;
-    // const deviceSize = item.device_size;
-    // const deviceSystem = item.device_system;
+    const city = item.city;
+    const country = item.country;
+    const deviceSize = item.device_size;
+    const deviceSystem = item.device_system;
     const formatedDate = formatDate(item?.created_at);
 
     // Report Per Date
@@ -31,31 +31,31 @@ const getGroupedCounts: any = (data: any) => {
     }
 
     // Report Per Device Size
-    // if (getReportPerDeviceSize.hasOwnProperty(deviceSize)) {
-    //   getReportPerDeviceSize[deviceSize] += 1;
-    // } else {
-    //   getReportPerDeviceSize[deviceSize] = 1;
-    // }
+    if (getReportPerDeviceSize.hasOwnProperty(deviceSize)) {
+      getReportPerDeviceSize[deviceSize] += 1;
+    } else {
+      getReportPerDeviceSize[deviceSize] = 1;
+    }
 
     // Report Per Device System
-    // if (getReportPerDeviceSystem.hasOwnProperty(deviceSystem)) {
-    //   getReportPerDeviceSystem[deviceSystem] += 1;
-    // } else {
-    //   getReportPerDeviceSystem[deviceSystem] = 1;
-    // }
+    if (getReportPerDeviceSystem.hasOwnProperty(deviceSystem)) {
+      getReportPerDeviceSystem[deviceSystem] += 1;
+    } else {
+      getReportPerDeviceSystem[deviceSystem] = 1;
+    }
 
     // Report Per Country and City
-    // if (
-    //   getReportPerCountryAndCity.hasOwnProperty(country) &&
-    //   getReportPerCountryAndCity[country][city]
-    // ) {
-    //   getReportPerCountryAndCity[country][city] += 1;
-    // } else {
-    //   getReportPerCountryAndCity[country] = {
-    //     ...getReportPerCountryAndCity[country],
-    //     [city]: 1,
-    //   };
-    // }
+    if (
+      getReportPerCountryAndCity.hasOwnProperty(country) &&
+      getReportPerCountryAndCity[country][city]
+    ) {
+      getReportPerCountryAndCity[country][city] += 1;
+    } else {
+      getReportPerCountryAndCity[country] = {
+        ...getReportPerCountryAndCity[country],
+        [city]: 1,
+      };
+    }
   });
 
   const reportPerDay: any[] = [];
@@ -64,46 +64,46 @@ const getGroupedCounts: any = (data: any) => {
   const reportPerCountryAndCity: any[] = [];
 
   // Transform the Report Per Date
-    for (const [key, value] of Object.entries(getReportPerDay)) {
-      reportPerDay.push({ date: key, clicks: value });
-    }
-    reportPerDay.sort(
-      (a: { [key: string]: number }, b: { [key: string]: number }) =>
-        a.date - b.date
-    );
+  for (const [key, value] of Object.entries(getReportPerDay)) {
+    reportPerDay.push({ date: key, clicks: value });
+  }
+  reportPerDay.sort(
+    (a: { [key: string]: number }, b: { [key: string]: number }) =>
+      a.date - b.date
+  );
 
   // Transform the Report Per Device Size
-  //   for (const [key, value] of Object.entries(getReportPerDeviceSize)) {
-  //     reportPerDeviceSize.push({ device: key, clicks: value });
-  //   }
-  //   reportPerDeviceSize.sort(
-  //     (a: { [key: string]: number }, b: { [key: string]: number }) =>
-  //       b.clicks - a.clicks
-  //   );
+  for (const [key, value] of Object.entries(getReportPerDeviceSize)) {
+    reportPerDeviceSize.push({ device: key, clicks: value });
+  }
+  reportPerDeviceSize.sort(
+    (a: { [key: string]: number }, b: { [key: string]: number }) =>
+      b.clicks - a.clicks
+  );
 
   // Transform the Report Per Device System
-  //   for (const [key, value] of Object.entries(getReportPerDeviceSystem)) {
-  //     reportPerDeviceSystem.push({ device: key, clicks: value });
-  //   }
-  //   reportPerDeviceSystem.sort(
-  //     (a: { [key: string]: number }, b: { [key: string]: number }) =>
-  //       b.clicks - a.clicks
-  //   );
+  for (const [key, value] of Object.entries(getReportPerDeviceSystem)) {
+    reportPerDeviceSystem.push({ device: key, clicks: value });
+  }
+  reportPerDeviceSystem.sort(
+    (a: { [key: string]: number }, b: { [key: string]: number }) =>
+      b.clicks - a.clicks
+  );
 
   // Transform the Report Per Country and City
-  //   for (const [key, value] of Object.entries(getReportPerCountryAndCity)) {
-  //     for (const [nestedKey, nestedValue] of Object.entries(value)) {
-  //       reportPerCountryAndCity.push({
-  //         city: nestedKey,
-  //         clicks: nestedValue,
-  //         country: key,
-  //       });
-  //     }
-  //   }
-  //   reportPerCountryAndCity.sort(
-  //     (a: { [key: string]: number }, b: { [key: string]: number }) =>
-  //       b.clicks - a.clicks
-  //   );
+  for (const [key, value] of Object.entries(getReportPerCountryAndCity)) {
+    for (const [nestedKey, nestedValue] of Object.entries(value)) {
+      reportPerCountryAndCity.push({
+        city: nestedKey,
+        clicks: nestedValue,
+        country: key,
+      });
+    }
+  }
+  reportPerCountryAndCity.sort(
+    (a: { [key: string]: number }, b: { [key: string]: number }) =>
+      b.clicks - a.clicks
+  );
 
   return {
     reportPerDay,
