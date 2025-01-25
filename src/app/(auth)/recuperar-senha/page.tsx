@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "@tanstack/react-form";
-import { AuthCard } from "@/components/auth/auth-card";
+import Link from "next/link";
+import ResetPasswordForEmail from "@/db/actions/resetPasswordForEmail/actions";
+import AuthCard from "@/components/auth/auth-card";
 import { AlertBanner } from "@/components/ui/alert-banner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import ResetPasswordForEmail from "@/db/actions/resetPasswordForEmail/actions";
-import Link from "next/link";
+import { useForm } from "@tanstack/react-form";
 
 export default function ForgotPasswordPage() {
   const [serverError, setServerError] = useState<boolean | null>(null);
@@ -39,8 +39,8 @@ export default function ForgotPasswordPage() {
       {serverError && (
         <AuthCard className="border-0">
           <AlertBanner
-            type="success"
             message="Conta criada com sucesso, por favor verifique o seu e-amil."
+            type="success"
           />
         </AuthCard>
       )}
@@ -57,11 +57,11 @@ export default function ForgotPasswordPage() {
             </div>
             <form.Provider>
               <form
+                className="space-y-4"
                 onSubmit={(e) => {
                   e.preventDefault();
                   form.handleSubmit();
                 }}
-                className="space-y-4"
               >
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
@@ -70,13 +70,13 @@ export default function ForgotPasswordPage() {
                       <>
                         <Input
                           id="email"
-                          type="email"
-                          placeholder="name@example.com"
-                          value={field.state.value}
                           onBlur={field.handleBlur}
                           onChange={(e: any) =>
                             field.handleChange(e.target.value)
                           }
+                          placeholder="seuemail@exemplo.com"
+                          type="email"
+                          value={field.state.value}
                         />
                         {field.state.meta.errors && (
                           <p className="text-sm text-destructive">
@@ -88,9 +88,9 @@ export default function ForgotPasswordPage() {
                   </form.Field>
                 </div>
                 <Button
-                  type="submit"
                   className="w-full"
                   disabled={form.state.isSubmitting}
+                  type="submit"
                 >
                   {form.state.isSubmitting ? "Enviando..." : "Recuperar Senha"}
                 </Button>
@@ -105,14 +105,16 @@ export default function ForgotPasswordPage() {
             <p className="text-muted-foreground">
               Enviamos um email com todas as instruções
             </p>
-            <Button asChild variant="outline" className="w-full">
-              <Link href="/login">Voltar para o Login</Link>
+            <Button asChild className="w-full" variant="outline">
+              <Link href="/login" prefetch>
+                Voltar para o Login
+              </Link>
             </Button>
           </div>
         )}
         <div className="mt-6 text-center text-sm">
           Lembra da sua senha?{" "}
-          <Link href="/login" className="text-primary hover:underline">
+          <Link className="text-primary hover:underline" href="/login">
             Faça o login aqui.
           </Link>
         </div>

@@ -1,7 +1,7 @@
 import { UsageCharts } from "@/components/dashboard/usageCharts";
 import GetUser from "@/actions/getUser/actions";
 import GetUserProfile from "@/actions/getUserProfile/actions";
-import { PageTitle } from "@/components/dashboard/pageTitle";
+import PageTitle from "@/components/dashboard/pageTitle";
 
 export default async function DashboardPage() {
   const data = await GetUser();

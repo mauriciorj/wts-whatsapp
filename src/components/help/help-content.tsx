@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Accordion,
   AccordionContent,
@@ -7,9 +5,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
-import { ContactCard } from "./contact-card";
+import ContactCard from "./contact-card";
 
-export function HelpContent() {
+const HelpContent = () => {
   const helpSections = [
     {
       id: "como-mudo-meu-link",
@@ -50,4 +48,6 @@ export function HelpContent() {
       <ContactCard />
     </div>
   );
-}
+};
+
+export default HelpContent;

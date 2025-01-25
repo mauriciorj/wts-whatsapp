@@ -16,11 +16,14 @@ export const config = {
      */
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
     "/",
-    "/login",
     "/criar-conta",
+    "/login",
+    "/recuperar-senha",
+    "/ajuda",
     "/contato",
-    "/sobre",
     "/politica-de-privacidade",
     "/politica-de-reembolso",
+    "/sobre",
+    "/wp",
   ],
 };

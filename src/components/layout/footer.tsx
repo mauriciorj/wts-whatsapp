@@ -7,10 +7,13 @@ const footerLinks = {
     { label: "Política de Privacidade", href: "/politica-de-privacidade" },
     { label: "Politica de Reembolso", href: "/politica-de-reembolso" },
   ],
-  support: [{ label: "Contato", href: "/contato" }],
+  support: [
+    { label: "Contato", href: "/contato" },
+    { label: "Ajuda", href: "/ajuda" },
+  ],
 };
 
-export function Footer() {
+const Footer = () => {
   return (
     <footer className="bg-secondary py-16">
       <div className="container mx-auto px-4">
@@ -69,4 +72,6 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;

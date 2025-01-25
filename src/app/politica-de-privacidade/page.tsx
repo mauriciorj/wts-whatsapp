@@ -1,5 +1,3 @@
-"use client";
-
 const privacySections = [
   {
     title: "Política de Privacidade",
@@ -48,7 +46,7 @@ const privacySections = [
       "- Acessar e corrigir suas informações pessoais;",
       "- Solicitar a exclusão de seus dados, salvo quando necessário para cumprir obrigações legais;",
       "- Revogar seu consentimento para o processamento de dados, quando aplicável.",
-      "- Para exercer seus direitos, entre em contato pelo e-mail [email@example.com].",
+      "- Para exercer seus direitos, entre em contato pelo e-mail contato@zaprouter.com.",
     ],
   },
   {
@@ -66,13 +64,13 @@ const privacySections = [
   {
     title: "8. Contato",
     content: [
-      "Se você tiver dúvidas ou preocupações sobre esta Política de Privacidade, entre em contato conosco pelo e-mail [email@example.com].",
+      "Se você tiver dúvidas ou preocupações sobre esta Política de Privacidade, entre em contato conosco pelo e-mail contato@zaprouter.com.",
       "O [Nome do SaaS] está comprometido em proteger a sua privacidade e em garantir a transparência no uso das suas informações.",
     ],
   },
 ];
 
-export default function PrivacyContent() {
+const PoliticaDePrivacidade = async () => {
   return (
     <div className="mb-24 p-8 space-y-8">
       <p className="text-muted-foreground">
@@ -80,7 +78,7 @@ export default function PrivacyContent() {
       </p>
 
       {privacySections.map((section, index) => (
-        <section key={index} className="space-y-4">
+        <section className="space-y-4" key={index}>
           <h2 className="text-2xl font-semibold">{section.title}</h2>
           <div className="space-y-4 text-muted-foreground">
             {section.content.map((paragraph, pIndex) => (
@@ -91,4 +89,6 @@ export default function PrivacyContent() {
       ))}
     </div>
   );
-}
+};
+
+export default PoliticaDePrivacidade;

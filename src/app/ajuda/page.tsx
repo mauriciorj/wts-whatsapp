@@ -1,12 +1,12 @@
-"use client";
+import HelpContent from "@/components/help/help-content";
 
-import { HelpContent } from "@/components/help/help-content";
-
-export default function HelpPage() {
+const Help = async () => {
   return (
     <div className="space-y-8">
       <h1 className="text-3xl font-bold">Central de Ajuda</h1>
       <HelpContent />
     </div>
   );
-}
+};
+
+export default Help;

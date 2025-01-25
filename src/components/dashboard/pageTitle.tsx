@@ -1,6 +1,4 @@
-"use client";
-
-export function PageTitle({ userName }: { userName: string }) {
+const PageTitle = ({ userName }: { userName: string }) => {
   return (
     <div>
       <h1 className="text-3xl font-bold">Bem vindo, {userName}</h1>
@@ -9,4 +7,6 @@ export function PageTitle({ userName }: { userName: string }) {
       </p>
     </div>
   );
-}
+};
+
+export default PageTitle;

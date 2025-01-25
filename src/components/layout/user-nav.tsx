@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { createClient } from "@/db/supabase/client";
+import { User, LogOut, Settings } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,10 +10,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, LogOut, Settings } from "lucide-react";
-import { useState } from "react";
+import { createClient } from "@/db/supabase/client";
 
-export function UserNav() {
+const UserNav = () => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -38,8 +38,8 @@ export function UserNav() {
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuItem
           asChild
-          onClick={() => router.push("/dashboard/perfil")}
           className="cursor-pointer"
+          onClick={() => router.push("/dashboard/perfil")}
         >
           <div className="w-full flex items-center">
             <User className="mr-2 h-4 w-4" />
@@ -57,4 +57,6 @@ export function UserNav() {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};
+
+export default UserNav;

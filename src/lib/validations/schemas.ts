@@ -25,3 +25,10 @@ export const signupSchema = z.object({
 export const forgotPasswordSchema = z.object({
   email: z.string().email("Endereço de email inválido"),
 });
+
+export const contactSchema = z.object({
+  name: z.string().min(2, "Nome é obrigatório"),
+  email: z.string().email("Endereço de email inválido"),
+  subject: z.string().min(2, "Assunto é obrigatório"),
+  message: z.string().min(10, "A mensagem deve ter pelo menos 10 caracteres"),
+});

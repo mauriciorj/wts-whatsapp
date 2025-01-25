@@ -1,11 +1,9 @@
-"use client";
-
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Mail } from "lucide-react";
 import Link from "next/link";
+import { Mail } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
-export function ContactCard() {
+const ContactCard = () => {
   return (
     <Card className="p-6">
       <div className="flex items-center justify-between">
@@ -19,4 +17,6 @@ export function ContactCard() {
       </div>
     </Card>
   );
-}
+};
+
+export default ContactCard;

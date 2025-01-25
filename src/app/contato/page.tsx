@@ -1,39 +1,56 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { AuthCard } from "@/components/auth/auth-card";
+import { LoaderCircle } from "lucide-react";
+import ContactWebForm from "@/actions/contactWebForm/actions";
+import AuthCard from "@/components/auth/auth-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { contactSchema } from "@/lib/validations/schemas";
+import { useForm } from "@tanstack/react-form";
 
-const contactSchema = z.object({
-  name: z.string().min(2, "Nome é obrigatório"),
-  email: z.string().email("Endereço de email inválido"),
-  subject: z.string().min(2, "Assunto é obrigatório"),
-  message: z.string().min(10, "A mensagem deve ter pelo menos 10 caracteres"),
-});
+const Contato = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [isServerError, setIsServerError] = useState<boolean>(false);
 
-export default function ContactPage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(contactSchema),
+  const form = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
+    validators: {
+      onSubmit: contactSchema,
+    },
+    onSubmit: async ({ value }: any) => {
+      setIsLoading(true);
+      try {
+        const response = await ContactWebForm(
+          value as {
+            email: string;
+            subject: string;
+            name: string;
+            message: string;
+          }
+        );
+        if (response === false) {
+          setIsServerError(true);
+          setIsLoading(false);
+        } else {
+          setIsServerError(false);
+          setIsSubmitted(true);
+          setIsLoading(false);
+        }
+      } catch {
+        setIsServerError(true);
+        setIsLoading(false);
+      }
+    },
   });
-
-  const onSubmit = async () => {
-    setIsLoading(true);
-    // Handle contact form submission here
-    setIsSubmitted(true);
-    setIsLoading(false);
-  };
 
   return (
     <div className="pt-14 pb-16 px-4">
@@ -43,72 +60,140 @@ export default function ContactPage() {
             <div className="space-y-2 text-center">
               <h1 className="text-2xl font-bold">Entre em contato</h1>
               <p className="text-muted-foreground">
-                Alguma dúvida. Ficaremos felizes em ajudar!
+                Alguma dúvida ou Sugestão? Ficaremos felizes em ajudar!
               </p>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              className="space-y-4"
+              onSubmit={(e) => {
+                e.preventDefault();
+                form.handleSubmit();
+              }}
+            >
               <div className="space-y-2">
-                <Label htmlFor="name">Nome *</Label>
-                <Input
-                  id="name"
-                  placeholder="Seu nome"
-                  {...register("name")}
-                  required
-                />
-                {errors.name && (
-                  <p className="text-sm text-destructive">
-                    {errors.name.message?.toString()}
-                  </p>
-                )}
+                <form.Field name="name">
+                  {(field) => (
+                    <>
+                      <Label htmlFor="firstName">Nome *</Label>
+                      <Input
+                        id="name"
+                        onBlur={field.handleBlur}
+                        onChange={(e: any) =>
+                          field.handleChange(e.target.value)
+                        }
+                        maxLength={50}
+                        placeholder="Nome"
+                        required
+                        type="text"
+                        value={field.state.value}
+                      />
+                      {field.state.meta.errors && (
+                        <p className="text-sm text-destructive">
+                          {field.state.meta.errors[0]}
+                        </p>
+                      )}
+                    </>
+                  )}
+                </form.Field>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="nome@exemplo.com"
-                  {...register("email")}
-                  required
-                />
-                {errors.email && (
-                  <p className="text-sm text-destructive">
-                    {errors.email.message?.toString()}
-                  </p>
-                )}
+              <div className="space-y-2 relative">
+                <form.Field name="email">
+                  {(field) => (
+                    <>
+                      <Label htmlFor="firstName">Email *</Label>
+                      <Input
+                        id="email"
+                        onBlur={field.handleBlur}
+                        onChange={(e: any) =>
+                          field.handleChange(e.target.value)
+                        }
+                        placeholder="seuemail@exemplo.com"
+                        required
+                        type="email"
+                        value={field.state.value}
+                      />
+                      {field.state.meta.errors && (
+                        <p className="text-sm text-destructive">
+                          {field.state.meta.errors[0]}
+                        </p>
+                      )}
+                    </>
+                  )}
+                </form.Field>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="subject">Assunto *</Label>
-                <Input
-                  id="subject"
-                  placeholder="Como podemos ajudar?"
-                  {...register("subject")}
-                  required
-                />
-                {errors.subject && (
-                  <p className="text-sm text-destructive">
-                    {errors.subject.message?.toString()}
-                  </p>
-                )}
+              <div className="space-y-2 relative">
+                <form.Field name="subject">
+                  {(field) => (
+                    <>
+                      <Label htmlFor="firstName">
+                        Dúvida, Assunto ou Sugestão *
+                      </Label>
+                      <Input
+                        id="subject"
+                        onBlur={field.handleBlur}
+                        onChange={(e: any) =>
+                          field.handleChange(e.target.value)
+                        }
+                        maxLength={200}
+                        placeholder="Tópico em poucas palavras..."
+                        required
+                        type="text"
+                        value={field.state.value}
+                      />
+                      {field.state.meta.errors && (
+                        <p className="text-sm text-destructive">
+                          {field.state.meta.errors[0]}
+                        </p>
+                      )}
+                    </>
+                  )}
+                </form.Field>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="message">Mensagem *</Label>
-                <Textarea
-                  id="message"
-                  placeholder="Sua mensagem..."
-                  className="min-h-[120px]"
-                  {...register("message")}
-                  required
-                />
-                {errors.message && (
-                  <p className="text-sm text-destructive">
-                    {errors.message.message?.toString()}
-                  </p>
-                )}
+              <div className="space-y-2 relative">
+                <form.Field name="message">
+                  {(field) => (
+                    <>
+                      <Label htmlFor="firstName">Mensagem *</Label>
+                      <Textarea
+                        id="message"
+                        onBlur={field.handleBlur}
+                        onChange={(e: any) =>
+                          field.handleChange(e.target.value)
+                        }
+                        maxLength={1000}
+                        placeholder="Sua mensagem..."
+                        required
+                        value={field.state.value}
+                      />
+                      {field.state.meta.errors && (
+                        <p className="text-sm text-destructive">
+                          {field.state.meta.errors[0]}
+                        </p>
+                      )}
+                    </>
+                  )}
+                </form.Field>
               </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Enviando..." : "Enviar Mensagem"}
+              <Button
+                className="w-full"
+                disabled={isLoading || isServerError}
+                type="submit"
+              >
+                {isLoading ? (
+                  <div className="flex flex-row items-center italic">
+                    Enviando...
+                    <LoaderCircle className="animate-spin h-5 w-5 ml-2" />
+                  </div>
+                ) : (
+                  "Enviar Mensagem"
+                )}
               </Button>
             </form>
+            {isServerError && (
+              <p className="text-sm text-destructive">
+                Ops... algo deu errado. Por favor tente novamente mais tarde.
+              </p>
+            )}
           </div>
         ) : (
           <div className="space-y-6 text-center">
@@ -118,9 +203,12 @@ export default function ContactPage() {
               possível.
             </p>
             <Button
-              variant="outline"
               className="w-full"
-              onClick={() => setIsSubmitted(false)}
+              onClick={() => {
+                setIsSubmitted(false);
+                form.reset();
+              }}
+              variant="outline"
             >
               Enviar Outra Mensagem
             </Button>
@@ -129,4 +217,6 @@ export default function ContactPage() {
       </AuthCard>
     </div>
   );
-}
+};
+
+export default Contato;

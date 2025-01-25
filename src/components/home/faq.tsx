@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Accordion,
   AccordionContent,
@@ -10,11 +8,13 @@ import {
 const faqItems = [
   {
     question: "Como funciona?",
-    answer: "Você vai ter um link e poderá cadastrar os seus WhatsApp. O nosso sistema fará um distribuição ",
+    answer:
+      "Você vai ter um link e poderá cadastrar os seus WhatsApp. O nosso sistema fará um distribuição ",
   },
   {
     question: "Posso usar WhatsApp business?",
-    answer: "Sim, não existe nenhuma restrição. O nosso sistema vai redirecionar para qualquer tipo de WhatsApp.",
+    answer:
+      "Sim, não existe nenhuma restrição. O nosso sistema vai redirecionar para qualquer tipo de WhatsApp.",
   },
   {
     question: "Qual a garantia?",
@@ -26,11 +26,12 @@ const faqItems = [
   },
   {
     question: "Tem suporte?",
-    answer: "Sim. Além de tutoriais você pode entrar em contato através de e-mail.",
+    answer:
+      "Sim. Além de tutoriais você pode entrar em contato através de e-mail.",
   },
 ];
 
-export function FAQ() {
+const FAQ = async () => {
   return (
     <section className="py-24 bg-background">
       <div className="container mx-auto px-4">
@@ -50,4 +51,6 @@ export function FAQ() {
       </div>
     </section>
   );
-}
+};
+
+export default FAQ;

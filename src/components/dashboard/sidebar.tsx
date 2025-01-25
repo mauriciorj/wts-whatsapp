@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import Link from "next/link";
 import {
   LayoutDashboard,
   MessageCircle,
@@ -12,15 +10,17 @@ import {
   Mail,
   Menu,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "WhatsApp", href: "/dashboard/whatsapp", icon: MessageCircle },
-  { label: "Ajuda", href: "/dashboard/ajuda", icon: HelpCircle },
+  { label: "Ajuda", href: "/ajuda", icon: HelpCircle },
   { label: "Contato", href: "/contato", icon: Mail },
 ];
 
-export function Sidebar() {
+const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
@@ -31,17 +31,17 @@ export function Sidebar() {
   return (
     <>
       <Button
-        variant="ghost"
-        size="icon"
         className="md:hidden fixed top-3 left-4 z-50"
         onClick={() => setIsOpen(!isOpen)}
+        size="icon"
+        variant="ghost"
       >
         <Menu className="h-6 w-6" />
       </Button>
 
       <div
         className={cn(
-          "fixed md:relative md:h-svh left-0 top-16 md:top-0 h-full w-64 border-r p-6 transition-transform duration-200 ease-in-out md:translate-x-0 z-10 bg-background" ,
+          "fixed md:relative md:h-svh left-0 top-16 md:top-0 h-full w-64 border-r p-6 transition-transform duration-200 ease-in-out md:translate-x-0 z-10 bg-background",
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}
       >
@@ -54,12 +54,12 @@ export function Sidebar() {
               const Icon = item.icon;
               return (
                 <Link
-                  key={item.href}
-                  href={item.href}
                   className={cn(
                     "flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors",
                     pathname === item.href && "bg-secondary text-foreground"
                   )}
+                  href={item.href}
+                  key={item.href}
                   onClick={() => setIsOpen(false)}
                 >
                   <Icon className="h-5 w-5" />
@@ -72,4 +72,6 @@ export function Sidebar() {
       </div>
     </>
   );
-}
+};
+
+export default Sidebar;

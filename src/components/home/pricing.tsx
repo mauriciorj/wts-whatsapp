@@ -3,8 +3,6 @@
 import { useCallback } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import {
   ChartNoAxesCombined,
   Check,
@@ -13,8 +11,10 @@ import {
   MonitorSmartphone,
   UserRound,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
-export function Pricing() {
+const Pricing = () => {
   const { theme } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
@@ -146,7 +146,7 @@ export function Pricing() {
   );
 
   return (
-    <section className="py-24 bg-secondary">
+    <section className="py-24 bg-secondary" id="planos">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-12">
           Preço Simplificado
@@ -154,10 +154,10 @@ export function Pricing() {
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {plans.map((plan) => (
             <Card
-              key={plan.name}
               className={`flex flex-col relative p-8 justify-between ${
                 plan.popular ? "border-2 border-blue-500" : null
               }`}
+              key={plan.name}
             >
               {plan.popular && (
                 <div className="absolute w-[80%] text-center -top-4 left-1/2 -translate-x-1/2 bg-primary px-4 py-1 rounded-full text-primary-foreground text-sm font-medium">
@@ -179,8 +179,8 @@ export function Pricing() {
                   {Object.values(plan.features).map((feature) =>
                     feature.special ? (
                       <li
-                        key={feature.label}
                         className="flex items-center gap-2 ml-3"
+                        key={feature.label}
                       >
                         {feature.icon}
                         <span className="text-primary-light">
@@ -202,7 +202,6 @@ export function Pricing() {
               <div>
                 <Button
                   className="w-full"
-                  variant={plan.popular ? "default" : "outline"}
                   onClick={() => {
                     router.push(
                       pathname +
@@ -211,6 +210,7 @@ export function Pricing() {
                         createQueryString("plan", plan.value)
                     );
                   }}
+                  variant={plan.popular ? "default" : "outline"}
                 >
                   Get Started
                 </Button>
@@ -221,4 +221,6 @@ export function Pricing() {
       </div>
     </section>
   );
-}
+};
+
+export default Pricing;
