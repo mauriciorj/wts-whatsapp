@@ -11,10 +11,10 @@ const ContactWebForm = async (formData: {
   const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_KEY);
 
   const { data, error } = await resend.emails.send({
-    from: "Contact Web Form <contact@zaprouter.pro>",
-    to: ["contact@zaprouter.pro"],
-    subject: "Contact Web Form",
-    html: `<h1>Contact Web Form</h1>
+    from: "Contato Web Form <contato@zaprouter.pro>",
+    to: ["contato@zaprouter.pro"],
+    subject: "Contato Web Form",
+    html: `<h1>Contato Web Form</h1>
         <p>From: ${formData.name}</p>
         <p>Assunto: ${formData.subject}</p>
         <p>Email: ${formData.email.toLowerCase()}</p>
