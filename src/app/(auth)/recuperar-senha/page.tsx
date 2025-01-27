@@ -21,9 +21,10 @@ export default function ForgotPasswordPage() {
     },
     onSubmit: async ({ value }: any) => {
       try {
-        const response = await ResetPasswordForEmail(
-          value as { email: string }
-        );
+        const response = await ResetPasswordForEmail({
+          email: value,
+          redirectToUrl: `https://www.zaprouter.pro/atualizar-senha`,
+        });
         if (response === false) {
           setServerError(true);
         } else {

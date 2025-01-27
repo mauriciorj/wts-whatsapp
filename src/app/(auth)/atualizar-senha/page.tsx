@@ -156,11 +156,11 @@ const ResetPassword = () => {
             >
               {form.state.isSubmitting ? (
                 <div className="flex flex-row items-center italic">
-                  Entrando...
+                  Atualizando senha...
                   <LoaderCircle className="animate-spin h-5 w-5 ml-2" />
                 </div>
               ) : (
-                "Entrar"
+                "Atualizar"
               )}
             </Button>
           </form>
