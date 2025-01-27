@@ -22,7 +22,7 @@ export default function ForgotPasswordPage() {
     onSubmit: async ({ value }: any) => {
       try {
         const response = await ResetPasswordForEmail({
-          email: value,
+          email: value.email,
           redirectToUrl: `https://www.zaprouter.pro/atualizar-senha`,
         });
         if (response === false) {
@@ -41,7 +41,7 @@ export default function ForgotPasswordPage() {
       {serverError && (
         <AuthCard className="border-0">
           <AlertBanner
-            message="Conta criada com sucesso, por favor verifique o seu e-amil."
+            message="Por favor verifique o seu email. Enviamos todas as informações para alterar a sua senha."
             type="success"
           />
         </AuthCard>
