@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { LoaderCircle } from "lucide-react";
 import ResetPasswordForEmail from "@/db/actions/resetPasswordForEmail/actions";
 import AuthCard from "@/components/auth/auth-card";
 import { AlertBanner } from "@/components/ui/alert-banner";
@@ -12,7 +13,7 @@ import { useForm } from "@tanstack/react-form";
 
 export default function ForgotPasswordPage() {
   const [serverError, setServerError] = useState<boolean | null>(null);
-  const [successMessage, setSuccessMessage] = useState<boolean | null>(null);
+  const [successMessage, setSuccessMessage] = useState<boolean | null>(false);
 
   const form: any = useForm({
     defaultValues: {
@@ -20,9 +21,10 @@ export default function ForgotPasswordPage() {
     },
     onSubmit: async ({ value }: any) => {
       try {
-        const response = await ResetPasswordForEmail(
-          value as { email: string }
-        );
+        const response = await ResetPasswordForEmail({
+          email: value,
+          redirectToUrl: `https://www.zaprouter.pro/atualizar-senha`,
+        });
         if (response === false) {
           setServerError(true);
         } else {
@@ -46,7 +48,7 @@ export default function ForgotPasswordPage() {
       )}
 
       <AuthCard>
-        {successMessage ? (
+        {!successMessage ? (
           <div className="space-y-6">
             <div className="space-y-2 text-center">
               <h1 className="text-2xl font-bold">Esqueceu a sua senha?</h1>
@@ -55,47 +57,53 @@ export default function ForgotPasswordPage() {
                 instruções
               </p>
             </div>
-            <form.Provider>
-              <form
-                className="space-y-4"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  form.handleSubmit();
-                }}
+            <form
+              className="space-y-4"
+              onSubmit={(e) => {
+                e.preventDefault();
+                form.handleSubmit();
+              }}
+            >
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <form.Field name="email">
+                  {(field: any) => (
+                    <>
+                      <Input
+                        id="email"
+                        onBlur={field.handleBlur}
+                        onChange={(e: any) =>
+                          field.handleChange(e.target.value)
+                        }
+                        placeholder="seuemail@exemplo.com"
+                        required
+                        type="email"
+                        value={field.state.value}
+                      />
+                      {field.state.meta.errors && (
+                        <p className="text-sm text-destructive">
+                          {field.state.meta.errors[0]}
+                        </p>
+                      )}
+                    </>
+                  )}
+                </form.Field>
+              </div>
+              <Button
+                className="w-full"
+                disabled={form.state.isSubmitting}
+                type="submit"
               >
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <form.Field name="email">
-                    {(field: any) => (
-                      <>
-                        <Input
-                          id="email"
-                          onBlur={field.handleBlur}
-                          onChange={(e: any) =>
-                            field.handleChange(e.target.value)
-                          }
-                          placeholder="seuemail@exemplo.com"
-                          type="email"
-                          value={field.state.value}
-                        />
-                        {field.state.meta.errors && (
-                          <p className="text-sm text-destructive">
-                            {field.state.meta.errors[0]}
-                          </p>
-                        )}
-                      </>
-                    )}
-                  </form.Field>
-                </div>
-                <Button
-                  className="w-full"
-                  disabled={form.state.isSubmitting}
-                  type="submit"
-                >
-                  {form.state.isSubmitting ? "Enviando..." : "Recuperar Senha"}
-                </Button>
-              </form>
-            </form.Provider>
+                {form.state.isSubmitting ? (
+                  <div className="flex flex-row items-center italic">
+                    Enviando...
+                    <LoaderCircle className="animate-spin h-5 w-5 ml-2" />
+                  </div>
+                ) : (
+                  "Recuperar Senha"
+                )}
+              </Button>
+            </form>
           </div>
         ) : (
           <div className="space-y-6 text-center">

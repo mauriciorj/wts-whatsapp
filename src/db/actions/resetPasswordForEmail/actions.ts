@@ -2,15 +2,19 @@
 
 import { createServer } from "@/db/supabase/server";
 
-const ResetPasswordForEmail = async (formData: { email: string }) => {
+const ResetPasswordForEmail = async ({
+  email,
+  redirectToUrl,
+}: {
+  email: string;
+  redirectToUrl: string;
+}) => {
   const supabase = await createServer();
-
-  const { email } = formData;
 
   const { error } = await supabase.auth.resetPasswordForEmail(
     email.toLowerCase(),
     {
-      redirectTo: `https://www.wetracksales.com/update-password`,
+      redirectTo: redirectToUrl,
     }
   );
 
