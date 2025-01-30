@@ -54,7 +54,7 @@ const PasswordRules = ({
             }`}
           >
             <div className="mr-1 w-[20px]">{rule5 ? <Check /> : null}</div>
-            Pelo menos um caracter especial - ex: @,#,!...
+            Pelo menos um caracter especial - !@#$%^&*?
           </li>
         </ul>
       </div>
